@@ -141,7 +141,7 @@ function showReorderInitiative() {
 }
 
 function downloadSite() {
-    fetch('https://glittery-dawn-654dd0.netlify.app/initiative-tracker/tracker.html')
+    fetch('site.zip')
     .then(response => response.blob()) // Convert the response to a Blob
     .then(blob => {
         const link = document.createElement("a"); // Create a temporary <a> element

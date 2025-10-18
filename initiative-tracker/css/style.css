@@ -10,18 +10,20 @@
 }
 
 @font-face {
-    font-family: 'Mouse Rat';
-    src: url(../montserrat/Montserrat-Medium.otf);
+    font-family: 'cousine';
+    src: url(../../font/Cousine-Regular.ttf);
 }
+
 @font-face {
-    font-family: 'Mouse Rat';
-    src: url(../montserrat/Montserrat-MediumItalic.otf);
-    font-style: italic;
-}
-@font-face {
-    font-family: 'Mouse Rat';
-    src: url(../montserrat/Montserrat-Bold.otf);
+    font-family: 'cousine';
+    src: url(../../font/Cousine-Bold.ttf);
     font-weight: bold;
+}
+
+@font-face {
+    font-family: 'cousine';
+    src: url(../../font/Cousine-Italic.ttf);
+    font-style: italic;
 }
 
 .image>img {
@@ -92,7 +94,8 @@ body {
     color: var(--text);
     font-variant: small-caps;
     margin: 0px;
-    font-family: 'Mouse Rat';
+    font-family: cousine;
+    font-weight: bold;
 }
 h2 {
     padding-top: 5px;
