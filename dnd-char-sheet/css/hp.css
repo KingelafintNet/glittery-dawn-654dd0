@@ -1,0 +1,50 @@
+#hpBar {
+    width:180px;
+    height:50px;
+    background-color: rgb(0, 0, 77);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#hpColor1, #hpColor2 {
+    width: 90px;
+    background-color: #00FF00;
+    top:0px;
+    height: 30px;
+    position: relative;
+}
+
+#hpBar>div {
+    display: flex;
+    position: relative;
+}
+
+#hpBar>span {
+    height: 20px;
+    font-size: 100%;
+    color:  rgba(0, 153, 255, 0.627);
+}
+
+#hpEdit > button {
+    background-color: rgb(0, 31, 156);
+    border: none;
+    margin: 1px;
+}
+
+#tempHP {
+    width: 180px;
+    position: absolute;
+    left: 0px;
+    height: 15px;
+    top: 15px;
+    background-color: rgba(0, 153, 255, 0.627);
+}
+#hpEdit {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(0, 0, 77);
+}
+#hpSystem {
+    width: 180px;
+}

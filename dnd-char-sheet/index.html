@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DND Spell Organizer</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/hp.css">
+</head>
+<body>
+    <!--<div id="newSpell">
+        <button type="button" onclick="openAddSpellGui()">Add spell</button>
+        <div id="newSpellGui">
+            <span><label for="spellName">Spell Name</label><input type="text" id="spellName"></span>
+            <span><label for="spellLevel">Spell Level</label><input type="text" id="spellLevel"></span>
+            <span><label for="spellSchool">Spell School</label><input type="text" id="spellSchool"></span>
+            <span><label for="spellRange">Spell Range</label><input type="text" id="spellRange"></span>
+            <span><label for="spellRitual">Ritual Casting</label><input type="checkbox" id="spellRitual"></span>
+            <span><label for="spellCastTime">Casting Time</label><input type="text" id="spellCastTime"></span>
+            <span><label for="spellComponents">Spell Components</label><input type="text" id="spellComponents"></span>
+            <span><label for="spellDuration">Spell Duration</label><input type="text" id="spellDuration"></span>
+            <span><label for="spellConcentration">Concentration</label><input type="checkbox" id="spellConcentration"></span>
+            <span><label for="spellClasses">Classes</label><input type="text" id="spellClasses"></span>
+            <span><label for="spellDescription">Description</label><input type="text" id="spellDescription"></span>
+            
+            <button type="button" onclick="addSpell()">Upload Spell</button>
+        </div>
+    </div>-->
+    
+    <div id="main">
+        <div id="hpSystem">
+            <div id="hpBar">
+                <span id="hpText">10/10</span>
+                <div>
+                    <div id="hpColor1">&nbsp;</div>
+                    <div id="hpColor2">&nbsp;</div>
+                    <div id="tempHP">&nbsp;</div>
+                </div>
+            </div>
+            <div id="hpEdit">
+                <button type="button" onclick="manageHealth('Damage')" style="color: rgb(185, 0, 0); font-weight: bold;">Damage</button>
+                <button type="button" onclick="manageHealth('Heal')" style="color: rgb(135, 255, 79); font-weight: bold;">Heal</button>
+                <button type="button" onclick="manageHealth('TempHP')" style="color: rgba(0, 153, 255, 0.627); font-weight: bold;">Temp HP</button>
+            </div>
+        </div>
+        <div id="actions">
+            <button type="button" onclick="displayAttacks()">Attacks</button>
+            <button type="button">Spellcasting</button>
+            <button type="button">Features</button>
+            <button type="button">Miscellaneous</button>
+        </div>
+    </div>
+    <div id="classLevels">
+        <p>Enter your character's Stats</p>
+        <span>
+            <span><label for="Strength">Strength: </label><input type="number" name="Strength" id="Str" min="1" max="30" value="10"></span>
+            <span><label for="Dexterity">Dexterity: </label><input type="number" name="Dexterity" id="Dex" min="1" max="30" value="10"></span>
+            <span><label for="Constitution">Constitution: </label><input type="number" name="Constitution" id="Con" min="1" max="30" value="10"></span>
+        </span>
+        <span>
+            <span><label for="Intelligence">Intelligence: </label><input type="number" name="Intelligence" id="Int" min="1" max="30" value="10"></span>
+            <span><label for="Wisdom">Wisdom: </label><input type="number" name="Wisdom" id="Wis" min="1" max="30" value="10"></span>
+            <span><label for="Charisma">Charisma: </label><input type="number" name="Charisma" id="Cha" min="1" max="30" value="10"></span>
+        </span>
+        <p>Enter the levels of your character:</p>
+        <span><label for="Artificer">Artificer: </label><input type="number" name="Artificer" id="Artificer" min="0" max="20" value="0"></span>
+        <span><label for="Bard">Bard: </label><input type="number" name="Bard" id="Bard" min="0" max="20" value="0"></span>
+        <span><label for="Barbarian">Barbarian: </label><input type="number" name="Barbarian" id="Barbarian" min="0" max="20" value="0"></span>
+        <span><label for="Cleric">Cleric: </label><input type="number" name="Cleric" id="Cleric" min="0" max="20" value="0"></span>
+        <span><label for="Druid">Druid: </label><input type="number" name="Druid" id="Druid" min="0" max="20" value="0"></span>
+        <span><label for="Fighter">Fighter: </label><input type="number" name="Fighter" id="Fighter" min="0" max="20" value="0"></span><span><label for="FighterCaster">Caster subclass?</label><input type="checkbox" name="FighterCaster" id="FighterCaster"></span>
+        <span><label for="Monk">Monk: </label><input type="number" name="Monk" id="Monk" min="0" max="20" value="0"></span>
+        <span><label for="Paladin">Paladin: </label><input type="number" name="Paladin" id="Paladin" min="0" max="20" value="0"></span>
+        <span><label for="Ranger">Ranger: </label><input type="number" name="Ranger" id="Ranger" min="0" max="20" value="0"></span>
+        <span><label for="Rogue">Rogue: </label><input type="number" name="Rogue" id="Rogue" min="0" max="20" value="0"></span><span><label for="RogueCaster">Caster subclass?</label><input type="checkbox" name="RogueCaster" id="RogueCaster"></span>
+        <span><label for="Sorcerer">Sorcerer: </label><input type="number" name="Sorcerer" id="Sorcerer" min="0" max="20" value="0"></span>
+        <span><label for="Warlock">Warlock: </label><input type="number" name="Warlock" id="Warlock" min="0" max="20" value="0"></span>
+        <span><label for="Wizard">Wizard: </label><input type="number" name="Wizard" id="Wizard" min="0" max="20" value="0"></span>
+        <button type="button" onclick="hideUnusedLevels()">Hide Unused Classes</button>
+        <div id="hideInput">
+            <button onclick="hideInput()" id="toggleInputButton">&rlarr;</button>
+        </div>
+    </div>
+    
+    <script src="js/solveLevels.js"></script>
+    <script src="js/userInterface.js"></script>
+    <script src="js/spellHandler.js"></script>
+    <script src="js/classes.js"></script>
+</body>
+</html>

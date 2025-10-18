@@ -1,0 +1,180 @@
+@font-face {
+    font-family: 'cousine';
+    src: url(../font/Cousine-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'cousine';
+    src: url(../font/Cousine-Bold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'cousine';
+    src: url(../font/Cousine-Italic.ttf);
+    font-style: italic;
+}
+
+*{
+    color: #a7820b;
+    font-weight: bold;
+    font-variant: small-caps;
+    transition: 0.2s;
+    font-family: cousine;
+}
+
+#main {
+    display: flex;
+    border: black, solid, 2px;
+    width: 84%;
+    height: fit-content;
+    float: left;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-radius: 20px;
+    background-color: rgb(0, 0, 109);
+}
+
+#you {
+    padding: 3px;
+    width: 15%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: rgb(0, 0, 117);
+    position: fixed;
+    top: 0px;
+    right: 0px;
+}
+
+body {
+    height: 600px; 
+    overflow-x: hidden;
+    background-color: rgb(0, 0, 53);
+    display: flex;
+}
+
+h4 {
+    text-align: center;
+    justify-self: center;
+}
+
+#you .child {
+    padding: 5px;
+    border-radius: 20px;
+    background-color: rgb(0, 0, 189);
+}
+
+#main img {
+    width: 100px;
+    height: 100px;
+    margin: 0px;
+    padding: 3px;
+    border: 1px, rgb(0, 0, 0), solid;
+    background-color: rgb(38, 38, 212);
+}
+
+#setup {
+    width: 40%;
+    height: 40%;
+    padding: 10%;
+    background-color: rgba(12, 12, 160, 0.74);
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+#setupP {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    top: 0px;
+    left: 0px;
+}
+
+img {
+    border-radius: 5px;
+}
+
+#main img:hover {
+    background-color: #002441;
+}
+
+#setup>span {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #a11e1e;
+    border: 2px solid #861616;
+}
+
+input[type="checkbox"] {
+    /* Used to hide default icon */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Just those three */
+    background-color: #004370;
+    border: 2px solid #003764;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+}
+
+input[type="checkbox"]:hover {
+    border-color: #002441;
+}
+
+button {
+    padding: 4px;
+    background-color: rgb(41, 41, 155);
+    border: #a7820b, solid, 4px;
+    border-radius: 10px;
+    color: #a7820b;
+}
+#start {
+    order: 100000;
+    align-self: flex-end;
+}
+
+button:hover {
+    background-color: #003764;
+}
+
+button:active {
+    background-color: #001424;
+}
+
+label:active, label:visited {
+    font-style: italic;
+}
+
+figure {
+    margin: 0px;
+    padding: 0px;
+}
+
+figcaption {
+    font-size: 100%;
+    width: 100px;
+    text-align: center;
+}
+
+#playerCapt {
+    width: 100%;
+}

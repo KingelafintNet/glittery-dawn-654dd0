@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initiative Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="setup">
+        <table id="setupTable">
+            <tr>
+                <td>Initiative</td>
+                <td>Name</td>
+                <td>Current HP</td>
+                <td>HP max</td>
+                <td>AC</td>
+                <td>Image name</td>
+            </tr>
+        </table>
+
+        <button type="button" onclick="addRow()">Add Row</button>
+        <button type="button" onclick="finishSetup(false)">Finish Setup</button>
+        <button type="button" onclick="setupFromLocalStorage()">Set up from localStorage</button>
+    </div>
+    <div id="using"></div>
+    <div id="clearStorage">
+        <button type="button" onclick="StorageHelper.clear()">Clear Storage</button>
+        <button type="button" onclick="reorderInitiative()">Reorder Initiative</button>
+        <button type="button" onclick="showReorderInitiative()">Hide/Show New Initiative</button>
+    </div>
+    <script src="js/classes.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

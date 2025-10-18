@@ -1,0 +1,92 @@
+#classLevels {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    background-color: rgb(36, 184, 10);
+    border: black 1px solid;
+    transition: 2s;
+
+}
+
+#hideInput {
+    position: absolute;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    transition: 0.2s;
+}
+
+#hideInput p {
+    position: absolute;
+    border: black 1px solid;
+}
+
+#newSpellGui {
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgb(18, 169, 171);
+    border: black 1px solid;
+    width: 300px;
+    margin-left: 100px;
+}
+
+#newSpellGui span { 
+    display: flex;
+    justify-content: space-between;
+}
+
+#newSpellGui label {
+    padding: 5px;
+}
+
+#main {
+    width: 360px;
+    height: 700px;
+    border: solid black 1px;
+    position: relative;
+    display: flex;
+    float: left;
+}
+
+body {
+    margin: 0px;
+    /* background-color: green; */
+}
+
+#actions {
+    width: 180px;
+    background-color: rgb(0,0,77);
+    height: 100px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: aliceblue;
+}
+#actions>* {
+    height: 30px;
+    border-radius: 5px;
+    border: goldenrod solid 1px;
+    background-color: rgb(0, 0, 106);
+    color: lime;
+}
+#popup {
+    width: 300px;
+    height: 400px;
+    position: absolute;
+    background-color: rgb(0,0,106);
+    left: 30px;
+    top: 100px;
+}
+
+.p_attacks {
+    text-align: center;
+    color: lime;
+}
+
+.p_attacks>* {
+    margin: 5px;
+}

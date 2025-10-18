@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess Who</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="/Guess Who/boardRandom.js"></script>
+    <div>
+    <div id="main">
+    </div>
+    <div id="setupP">
+        <div id="setup">
+            <span><input type="checkbox" id="shuff"><label for="shuff">Shuffling?</label></span>
+            <h3>Select sets used</h3>
+            <span><input type="checkbox" id="aot"><label for="aot">Attack on Titan</label></span>
+            <span><input type="checkbox" id="tdp"><label for="tdp">The Dragon Prince</label></span>
+            <span><input type="checkbox" id="kage"><label for="kage">The Eminence in Shadow</label></span>
+            <span><input type="checkbox" id="one"><label for="one">One Piece</label></span>
+            <span><input type="checkbox" id="per"><label for="per">Percy Jackson</label></span>
+            <span><input type="checkbox" id="ten"><label for="ten">That Time I Got Reincarnated as a Slime</label></span>
+            <span><input type="checkbox" id="tsuki"><label for="tsuki">Tsukimichi: Moonlit Fantasy</label></span>
+            <!--<span><input type="checkbox" id=""><label for=""></label></span>-->
+            <button type="button" onclick="startGame()" id="start">Start Game</button>
+        </div>
+    </div>
+    <div id="you">
+        <div class="child" onclick="hideProfile()">
+            <h4>Your character</h4>
+            <div id="gwiz">
+                <img src="default.jpg" width="150px" height="150px" id="icon">
+                <figcaption id="playerCapt">Your character</figcaption>
+            </div>
+        </div>
+        <div id="over"></div>
+    </div>
+    </div>
+</body>
+</html>
