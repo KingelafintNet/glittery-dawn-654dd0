@@ -44,13 +44,13 @@
 }
 #clearStorage {
     position: fixed;
-    top: 0px;
+    bottom: 0px;
     right: 0px;
-    display: flex;
+    display: none;
     flex-direction: column;
-    border-radius: 0px 0px 0px 17px;
+    border-radius: 17px 0px 0px 0px;
     border: var(--gold) solid 2px;
-    border-top: none;
+    border-bottom: none;
     border-right: none;
     background-color: var(--background2);
     z-index: 900;

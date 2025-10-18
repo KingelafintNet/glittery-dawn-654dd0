@@ -56,6 +56,7 @@ function resetLocalStorage(wasPremade, i, reset) {
 
 function buildDoc() {
     let using = document.getElementById('using');
+    document.getElementById('clearStorage').style.display = "flex";
     using.innerHTML = "";
     let i = 0;
     initiative.forEach(element => {
@@ -66,7 +67,7 @@ function buildDoc() {
         if (element.turn == true) {
             initiativeObject.id = "thisPersonsTurnNow";            
         }
-        img.src = `/imgs/${element.picture}.png`;
+        img.src = element.picture;
         initiativeObject.appendChild(img);
         using.appendChild(initiativeObject);
         i++;
@@ -139,7 +140,18 @@ function showReorderInitiative() {
     buildDoc();
 }
 
-
+function downloadSite() {
+    fetch('https://glittery-dawn-654dd0.netlify.app/initiative-tracker/tracker.html')
+    .then(response => response.blob()) // Convert the response to a Blob
+    .then(blob => {
+        const link = document.createElement("a"); // Create a temporary <a> element
+        link.href = URL.createObjectURL(blob); // Create an object URL for the Blob
+        link.download = filename; // Set the desired file name
+        link.click(); // Trigger the download
+        URL.revokeObjectURL(link.href); // Clean up the object URL
+    })
+    .catch(error => console.error("Download failed:", error));
+}
 const StorageHelper = {
     // Save an object or value
     set(key, value) {
