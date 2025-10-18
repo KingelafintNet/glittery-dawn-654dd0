@@ -146,7 +146,7 @@ function downloadSite() {
     .then(blob => {
         const link = document.createElement("a"); // Create a temporary <a> element
         link.href = URL.createObjectURL(blob); // Create an object URL for the Blob
-        link.download = filename; // Set the desired file name
+        link.download = "Initiative Tracker"; // Set the desired file name
         link.click(); // Trigger the download
         URL.revokeObjectURL(link.href); // Clean up the object URL
     })
