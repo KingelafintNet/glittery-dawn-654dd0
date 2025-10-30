@@ -1,6 +1,6 @@
 let setList = [];
 // Update this every time there is a new list
-const allSets = ['aot', 'tdp', 'kage', 'one', 'per', 'ten', 'tsuki'];
+const allSets = ['aot', 'tdp', 'kage', 'one', 'per', 'ten', 'tsuki','fe3h'];
 let paths = [];
 let length = 0;
 let dark = 0;
@@ -11,7 +11,7 @@ function checkLength(valid, setid) {
     if (valid) {
         let group = allSets[setid];
         // The code below gets the path to a file premade with all of the paths for the images, and then checks if that file exsists.
-        let preMadePath = '/Guess Who/'+group+'/'+group+'.txt';
+        let preMadePath = `${group}/${group}.txt`;
         let preMade = doesFileExist(preMadePath);
         if (preMade) {
             let rawPath = readTextFile(preMadePath);
@@ -30,7 +30,7 @@ function checkLength(valid, setid) {
             let i = 1;
             let prelist = [];
             while (true) {
-                let iteration = '/Guess Who/' + group + '/' + i + '.jpg';
+                let iteration = group + '/' + i + '.jpg';
                 if (doesFileExist(iteration)) {
                     paths[length+i-1] = iteration;
                     prelist[i-1] = iteration;
@@ -41,6 +41,7 @@ function checkLength(valid, setid) {
                         function downloadFile() {
                             const link = document.createElement('a');
                             const content = prelist.toString();
+                            console.log(prelist.toString())
                             const file = new Blob([content], { type: 'text/plain' });
                             link.href = URL.createObjectURL(file);
                             link.download = group + '.txt';
@@ -58,7 +59,7 @@ function checkLength(valid, setid) {
             i--;
             return i;
         }
-        let rawNames = readTextFile('/Guess Who/'+group+'/names.txt');
+        let rawNames = readTextFile(`${group}/names.txt`);
         if (isFirstPassOverNames) {
             isFirstPassOverNames = false;
             names = rawNames.split(',');
@@ -118,7 +119,7 @@ function choosePicture() {
     let character = Math.floor(Math.random() * length);
     let picturePath = paths[character];
     document.getElementById('playerCapt').innerText = names[character];
-    picturePath = picturePath.substr(11, picturePath.length-1);
+    // picturePath = picturePath.substr(11, picturePath.length-1);
     icon.src = picturePath;
 }
 

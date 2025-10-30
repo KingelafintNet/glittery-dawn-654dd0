@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Recommendation Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main">
+    </div>
+    <button type="button" onclick="addShow()">Add Media</button>
+    <!-- <button type="button" onclick="clearMedia()">Clear Media</button> -->
+    <!-- <button type="button" onclick="loadMedia()">Load Media</button> -->
+    <div id="addShow">
+        <label for="name">Media Name</label><input type="text" name="name" id="name">
+        <label for="desc">Media Description</label><input type="text" name="desc" id="desc">
+        <label for="light">Media Lighter</label><input type="text" name="light" id="light">
+        <label for="img">Media Picture</label><input type="text" name="img" id="img">
+        <label for="id">id</label><input type="text" name="id" id="id">
+        <br>
+        <button type="button" onclick="createMediaAndCookies()">Add Media</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
