@@ -1,44 +1,44 @@
 :root {
-    --background1:rgb(0, 0, 77);
-    --background2:rgb(35, 0, 100);
-    --background3:rgb(42, 0, 121);
-    --background4:rgb(54, 1, 153);
-    --background5:rgb(64, 0, 184);
-    --person:rgb(13, 0, 201);
-    --gold:rgb(191, 151, 52);
-    --text:var(--gold);
+    --background1: rgb(0, 0, 77);
+    --background2: rgb(35, 0, 100);
+    --background3: rgb(42, 0, 121);
+    --background4: rgb(54, 1, 153);
+    --background5: rgb(64, 0, 184);
+    --person: rgb(13, 0, 201);
+    --gold: rgb(191, 151, 52);
+    --text: var(--gold);
 }
 
 @font-face {
-    font-family: 'cousine';
+    font-family: "cousine";
     src: url(../../font/Cousine-Regular.ttf);
 }
 
 @font-face {
-    font-family: 'cousine';
+    font-family: "cousine";
     src: url(../../font/Cousine-Bold.ttf);
     font-weight: bold;
 }
 
 @font-face {
-    font-family: 'cousine';
+    font-family: "cousine";
     src: url(../../font/Cousine-Italic.ttf);
     font-style: italic;
 }
 
-.image>img {
+.image > img {
     opacity: 0;
     position: absolute;
     top: 0px;
     left: 600px;
     transition: 0.3s;
 }
-.image:active>img {
+.image:active > img {
     opacity: 1;
     z-index: 1000;
 }
 #setupTable td {
-    border:1px solid var(--gold);
+    border: 1px solid var(--gold);
     padding: 5px;
 }
 #setupTable {
@@ -48,7 +48,7 @@
     position: fixed;
     bottom: 0px;
     right: 0px;
-    display: none;
+    display: flex;
     flex-direction: column;
     border-radius: 17px 0px 0px 0px;
     border: var(--gold) solid 2px;
@@ -64,19 +64,19 @@
 input[type="number"] {
     width: 30px;
 }
-#thisPersonsTurnNow>* {
+#thisPersonsTurnNow > * {
     background-color: var(--person);
     opacity: 1;
     z-index: 10;
 }
 
-#thisPersonsTurnNow:active>* {
+#thisPersonsTurnNow:active > * {
     z-index: 1001;
 }
 
 input {
     background-color: var(--background3);
-    border:none;
+    border: none;
     font-variant: normal;
 }
 button {
@@ -84,7 +84,7 @@ button {
     padding: 5px;
     border-radius: 10px;
     margin: 5px;
-    border:2px solid var(--gold);
+    border: 2px solid var(--gold);
 }
 
 body {
