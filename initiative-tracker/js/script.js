@@ -177,7 +177,7 @@ function uploadJSON() {
             let formatted = JSON.stringify(result, null, 2);
             console.log(formatted);
             initiative = result;
-            let i = 0;
+            let i = setupTable.rows.length - 1;
             initiative.forEach((character) => {
                 addRow();
                 let row = setupTable.rows[i + 1];
