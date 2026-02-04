@@ -30,17 +30,29 @@
     opacity: 0;
     position: absolute;
     top: 0px;
-    left: 600px;
+    left: 650px;
     transition: 0.3s;
 }
 .image:active > img {
     opacity: 1;
     z-index: 1000;
 }
-#setupTable td {
+#setupTable > tr > td {
     border: 1px solid var(--gold);
     padding: 5px;
 }
+#setupTable th {
+    background-color: var(--background3);
+    border: 1px solid var(--gold);
+    padding: 5px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #setupTable {
     border-collapse: collapse;
 }
@@ -62,7 +74,7 @@
     font-size: 20px;
 }
 input[type="number"] {
-    width: 30px;
+    width: 40px;
 }
 #thisPersonsTurnNow > * {
     background-color: var(--person);
@@ -87,6 +99,16 @@ button {
     border: 2px solid var(--gold);
 }
 
+button:hover {
+    background-color: var(--background4);
+    cursor: pointer;
+}
+
+button:active {
+    background-color: var(--background4);
+    border-width: 3px;
+}
+
 body {
     background-color: var(--background1);
 }
@@ -100,4 +122,36 @@ body {
 h2 {
     padding-top: 5px;
     padding-bottom: 2px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #a11e1e;
+    border: 2px solid #861616;
+}
+
+input[type="checkbox"] {
+    /* Used to hide default icon */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Just those three */
+    background-color: #004370;
+    border: 2px solid #003764;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+}
+
+input[type="checkbox"]:hover {
+    border-color: #002441;
+}
+
+.player {
+    background-color: #002b56;
 }

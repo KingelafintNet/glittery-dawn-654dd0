@@ -5,12 +5,13 @@ let letChangeInit = false;
 
 function addRow() {
     const tr = document.createElement("tr");
-    tr.innerHTML = `                <td><input type="number"></td>
-                <td><input type="text"></td>
-                <td><input type="number"></td>
-                <td><input type="number"></td>
-                <td><input type="number"></td>
-                <td><input type="text"></td>`;
+    tr.innerHTML = `                <td><span class="center"><input type="number"></span></td>
+                <td><span class="center"><input type="text"></span></td>
+                <td><span class="center"><input type="number"></span></td>
+                <td><span class="center"><input type="number"></span></td>
+                <td><span class="center"><input type="number"></span></td>
+                <td><span class="center"><input type="text"></span></td>
+                <td><span class="center"><input type="checkbox"></span></td>`;
     setupTable.appendChild(tr);
 }
 
@@ -45,6 +46,7 @@ function makeInitiativeObject(row) {
     stats.hpMax = Number(row.cells[3].querySelector("input").value);
     stats.ac = Number(row.cells[4].querySelector("input").value);
     stats.picture = row.cells[5].querySelector("input").value;
+    stats.isPlayer = row.cells[6].querySelector("input").checked;
     stats.turn = false;
     return stats;
 }
@@ -57,9 +59,9 @@ function buildDoc() {
     initiative.forEach((element) => {
         const initiativeObject = document.createElement("div");
         const img = document.createElement("img");
-        initiativeObject.innerHTML = `<h2>${letChangeInit ? `<span class="newInitiative"><input type="number" id="${element.name}newInit">New Init</span>|` : ""}${element.name} | ${element.hp}/${
-            element.hpMax
-        } HP | ${element.ac}AC <input type="number" id="${element.name}hp"><button type="button" onclick="handleDamage('${i}')">Damage</button></h2>`;
+        initiativeObject.innerHTML = `<h2 class="${element.isPlayer ? "player" : ""}">${
+            letChangeInit ? `<span class="newInitiative"><input type="number" id="${element.name}newInit">New Init</span>|` : ""
+        }${element.name} | ${element.hp}/${element.hpMax} HP | ${element.ac}AC <input type="number" id="${element.name}hp"><button type="button" onclick="handleDamage('${i}')">Damage</button></h2>`;
         initiativeObject.className = "image";
         if (element.turn == true) {
             initiativeObject.id = "thisPersonsTurnNow";
@@ -165,7 +167,6 @@ function uploadJSON() {
     shadowInput.click();
     shadowInput.onchange = function () {
         let files = shadowInput.files;
-        console.log(files);
         if (files.length <= 0) {
             return false;
         }
@@ -174,21 +175,19 @@ function uploadJSON() {
 
         fr.onload = function (e) {
             let result = JSON.parse(e.target.result);
-            let formatted = JSON.stringify(result, null, 2);
-            console.log(formatted);
             initiative = result;
             let i = setupTable.rows.length - 1;
             initiative.forEach((character) => {
                 addRow();
-                let row = setupTable.rows[i + 1];
-                console.log(row);
+                i++;
+                let row = setupTable.rows[i];
                 row.cells[0].querySelector("input").value = character.initiative;
                 row.cells[1].querySelector("input").value = character.name;
                 row.cells[2].querySelector("input").value = character.hp;
                 row.cells[3].querySelector("input").value = character.hpMax;
                 row.cells[4].querySelector("input").value = character.ac;
                 row.cells[5].querySelector("input").value = character.picture;
-                i++;
+                row.cells[6].querySelector("input").checked = character.isPlayer;
             });
         };
 
