@@ -54,9 +54,7 @@ function checkLength(valid, setid) {
                             URL.revokeObjectURL(link.href);
                         }
                         downloadFile();
-                        alert(
-                            "Please place the downloaded file in the apropriate folder.",
-                        );
+                        alert("Please place the downloaded file in the apropriate folder.");
                     }
                     console.log("To be clear, these errors should be here");
                     break;
@@ -151,8 +149,7 @@ function darken(index) {
 
 function endGame() {
     let over = document.getElementById("over");
-    over.innerHTML =
-        '<button type="button" onclick="unyeet()">New Game</button>';
+    over.innerHTML = '<button type="button" onclick="unyeet()">New Game</button>';
 }
 
 function startGame() {
@@ -174,12 +171,7 @@ function startGame() {
             figure.id = buildIndex;
             figure.setAttribute("class", "black");
             figure.setAttribute("onclick", "darken(" + buildIndex + ")");
-            figure.innerHTML =
-                '<img src="' +
-                paths[buildIndex] +
-                '" alt="no"><figcaption>' +
-                names[buildIndex] +
-                "</figcaption>";
+            figure.innerHTML = '<img src="' + paths[buildIndex] + '" alt="no"><figcaption>' + names[buildIndex] + "</figcaption>";
             main.appendChild(figure);
         }
     }
@@ -234,9 +226,7 @@ async function createPeer() {
     pc.onicecandidate = (e) => {
         if (e.candidate === null) {
             // All ICE candidates have been gathered → output the offer
-            document.getElementById("offer").value = JSON.stringify(
-                pc.localDescription,
-            );
+            document.getElementById("offer").value = JSON.stringify(pc.localDescription);
         }
     };
 }
@@ -268,9 +258,7 @@ async function acceptOffer() {
     // ICE candidates done → output answer
     pc.onicecandidate = (e) => {
         if (e.candidate === null) {
-            document.getElementById("answer").value = JSON.stringify(
-                pc.localDescription,
-            );
+            document.getElementById("answer").value = JSON.stringify(pc.localDescription);
         }
     };
 }
@@ -281,7 +269,7 @@ async function acceptAnswer() {
 }
 
 function sendMessage() {
-    const msg = document.getElementById("msgInput").value;
+    const msg = document.getElementById("message").value;
     channel.send(msg);
     const log = document.getElementById("log");
     log.value += "\nMe: " + msg;
