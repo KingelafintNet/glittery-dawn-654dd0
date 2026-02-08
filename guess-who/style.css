@@ -1,21 +1,21 @@
 @font-face {
-    font-family: 'cousine';
+    font-family: "cousine";
     src: url(../font/Cousine-Regular.ttf);
 }
 
 @font-face {
-    font-family: 'cousine';
+    font-family: "cousine";
     src: url(../font/Cousine-Bold.ttf);
     font-weight: bold;
 }
 
 @font-face {
-    font-family: 'cousine';
+    font-family: "cousine";
     src: url(../font/Cousine-Italic.ttf);
     font-style: italic;
 }
 
-*{
+* {
     color: #a7820b;
     font-weight: bold;
     font-variant: small-caps;
@@ -51,7 +51,7 @@
 }
 
 body {
-    height: 600px; 
+    height: 600px;
     overflow-x: hidden;
     background-color: rgb(0, 0, 53);
     display: flex;
@@ -107,7 +107,7 @@ img {
     background-color: #002441;
 }
 
-#setup>span {
+#setup > span {
     display: flex;
     align-items: center;
 }
@@ -140,6 +140,22 @@ input[type="checkbox"]:hover {
     border-color: #002441;
 }
 
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Just those three */
+    background-color: #004370;
+    border: 2px solid #003764;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+}
+
+textarea:hover {
+    border-color: #002441;
+}
+
 button {
     padding: 4px;
     background-color: rgb(41, 41, 155);
@@ -160,7 +176,8 @@ button:active {
     background-color: #001424;
 }
 
-label:active, label:visited {
+label:active,
+label:visited {
     font-style: italic;
 }
 
@@ -177,4 +194,23 @@ figcaption {
 
 #playerCapt {
     width: 100%;
+}
+
+#you h3 {
+    margin: 0px;
+    margin-top: 10px;
+}
+
+#chatSetup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#chatSetup button {
+    border-width: 2px;
+}
+
+#chat {
+    display: block;
 }
