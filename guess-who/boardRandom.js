@@ -234,6 +234,7 @@ async function createPeer() {
 function setupChannel(channel) {
     channel.onopen = () => {
         document.getElementById("chat").style.display = "block";
+        document.getElementById("chatSetup").style.display = "none";
     };
     channel.onmessage = (e) => {
         const log = document.getElementById("log");
@@ -268,9 +269,9 @@ async function acceptAnswer() {
     await pc.setRemoteDescription(answer);
 }
 
-function sendMessage() {
+async function sendMessage() {
     const msg = document.getElementById("message").value;
-    channel.send(msg);
+    await channel.send(msg);
     const log = document.getElementById("log");
     log.value += "\nMe: " + msg;
 }
