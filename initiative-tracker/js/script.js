@@ -1,6 +1,5 @@
 const setupTable = document.getElementById("setupTable");
 let initiative = [];
-let turn;
 let letChangeInit = false;
 
 function addRow() {
@@ -25,13 +24,15 @@ function finishSetup(wasPremade) {
     // Now we start the useable part
 
     // But first we sort the initiatives with bubble sort
-    for (let i = 0; i < initiative.length; i++) {
-        for (let j = 0; j < initiative.length - i - 1; j++) {
-            if (initiative[j].initiative < initiative[j + 1].initiative) {
-                // Swap elements
-                let temp = initiative[j];
-                initiative[j] = initiative[j + 1];
-                initiative[j + 1] = temp;
+    if (prompt("Reorder based on initiative score? Y/N").toLowerCase() != "n") {
+        for (let i = 0; i < initiative.length; i++) {
+            for (let j = 0; j < initiative.length - i - 1; j++) {
+                if (initiative[j].initiative < initiative[j + 1].initiative) {
+                    // Swap elements
+                    let temp = initiative[j];
+                    initiative[j] = initiative[j + 1];
+                    initiative[j + 1] = temp;
+                }
             }
         }
     }
@@ -63,7 +64,7 @@ function buildDoc() {
             letChangeInit ? `<span class="newInitiative"><input type="number" id="${element.name}newInit">New Init</span>|` : ""
         }${element.name} | ${element.hp}/${element.hpMax} HP | ${element.ac}AC <input type="number" id="${element.name}hp"><button type="button" onclick="handleDamage('${i}')">Damage</button></h2>`;
         initiativeObject.className = "image";
-        if (element.turn == true) {
+        if (element.turn == true || i == 0) {
             initiativeObject.id = "thisPersonsTurnNow";
         }
         img.src = element.picture;
@@ -105,15 +106,9 @@ function reorderInitiative() {
 }
 
 function nextInitiativefunc() {
-    if (turn == null) {
-        initiative[0].turn = true;
-        turn = 0;
-    } else {
-        initiative[turn].turn = false;
-        turn++;
-        turn = turn >= initiative.length ? 0 : turn;
-        initiative[turn].turn = true;
-    }
+    let first = initiative.shift();
+    initiative[initiative.length] = first;
+
     buildDoc();
 }
 
