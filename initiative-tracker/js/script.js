@@ -36,6 +36,13 @@ function finishSetup(wasPremade) {
             }
         }
     }
+    document.addEventListener("keydown", function (event) {
+        // Check for spacebar without triggering when typing in inputs/textareas
+        if (event.code === "Space" && !event.repeat) {
+            event.preventDefault();
+            nextInitiativefunc();
+        }
+    });
     buildDoc();
 }
 
