@@ -1,0 +1,28 @@
+table {
+    height: 80vh !important;
+    width: 80vh !important;
+    position: relative;
+}
+body > div {
+    height: 100vh;
+}
+.node {
+    background-color: aquamarine;
+    height: 19vh !important;
+    width: 19vh !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5vh;
+    transition: all 1s;
+}
+
+td {
+    margin: 0;
+    padding: 0;
+    height: 20vh;
+}

@@ -4,13 +4,18 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="../bootstrap.min.css" />
         <title>Love Calculator</title>
     </head>
     <body>
         <script defer src="js/script.js"></script>
-        <input type="text" id="subject1" />
-        <input type="text" id="subject2" />
+        <div class="container">
+            <div class="justify-content-around row gx-5">
+                <input type="text" id="subject1" class="col-4 bg-danger-subtle border-danger" />
+                <input type="text" id="subject2" class="col-4 bg-danger-subtle border-danger" />
+            </div>
+        </div>
         <p id="output"></p>
-        <button id="calculate">Calculate Love</button>
+        <button id="calculate" class="btn btn-danger col-3 text-capitalize">Calculate Love</button>
     </body>
 </html>
