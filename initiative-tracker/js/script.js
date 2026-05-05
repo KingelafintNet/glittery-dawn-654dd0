@@ -62,6 +62,7 @@ function makeInitiativeObject(row) {
 function buildDoc() {
     let using = document.getElementById("using");
     document.getElementById("clearStorage").style.display = "flex";
+    let windowHeight = document.documentElement.clientHeight;
     using.innerHTML = "";
     let i = 0;
     initiative.forEach((element) => {
@@ -75,6 +76,7 @@ function buildDoc() {
             initiativeObject.id = "thisPersonsTurnNow";
         }
         img.src = element.picture;
+        img.style.maxHeight = String(windowHeight) + "px";
         initiativeObject.appendChild(img);
         using.appendChild(initiativeObject);
         i++;
@@ -88,6 +90,9 @@ function buildDoc() {
 
 function handleDamage(i) {
     initiative[i].hp += -1 * Number(document.getElementById(initiative[i].name + "hp").value);
+    if (initiative[i].hp < 0) {
+        initiative.splice(i, 1);
+    }
     buildDoc();
 }
 
