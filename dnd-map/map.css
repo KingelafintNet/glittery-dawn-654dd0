@@ -1,5 +1,20 @@
+:root {
+    --gold: rgb(238, 189, 66);
+    --navy: rgb(2, 0, 124);
+    --hero: rgb(0, 24, 202);
+    --enemy: rgb(160, 5, 0);
+}
+
+nav {
+    width: 100vw;
+    height: 40px;
+    background-color: var(--navy);
+    border-bottom: solid 1px var(--gold);
+}
+
 body {
     margin: 0px;
+    position: relative;
 }
 
 table {
@@ -13,33 +28,91 @@ td {
     min-height: 50px;
     max-width: 50px;
     max-height: 50px;
+    padding: 0px;
     border: 1px solid black;
+    overflow: visible;
+    position: relative;
+    z-index: 0;
 }
 
 .token {
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 100%;
+    padding: 0px;
+    border: black solid 3px;
+    z-index: 100000;
 }
 
 .token > div:first-child {
     overflow: hidden;
-    border: rgb(0, 30, 255) solid 1px;
     border-radius: 100%;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
 }
 .token img {
+    width: 100%;
+    margin: 0px;
+    position: absolute;
+}
+.shade {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: grayscale(1);
+    z-index: 1000;
+}
+
+.shade > div:first-child {
+    overflow: hidden;
+    border: rgb(0, 30, 255) solid 1px;
+    border-radius: 100%;
+    position: absolute;
+}
+.shade img {
     width: 100%;
 }
 
 .arrow {
     position: absolute;
     width: 20px;
-    height: 20px;
-    background-color: rgba(69, 69, 69, 0.378);
+    height: 40px;
+    background-color: rgba(2, 0, 124, 0.582);
+    color: var(--gold);
     padding: 5px;
-    transform-origin: right center;
-    border: solid 0px black;
+    border: solid 1px var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+.up {
+    transform: rotate(90deg);
+}
+.down {
+    transform: rotate(270deg);
+}
+.right {
+    transform: rotate(180deg);
+}
+.arrow-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.arrow-layer .arrow {
+    pointer-events: auto;
 }
