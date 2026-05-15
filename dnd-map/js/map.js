@@ -11,6 +11,7 @@ const SUPABASE_KEY =
 let size = [15, 25, 50, 100, 150, 200];
 let directions = ["right", "down", "left", "up"];
 let initiativeTracker = document.getElementById("initiativeTracker");
+let GMcode = "HoppingFrog";
 
 let controlling = 0;
 let pictures = [];
@@ -56,6 +57,12 @@ const arrowLayer = document.createElement("div");
 arrowLayer.classList.add("arrow-layer");
 document.body.appendChild(arrowLayer);
 
+// Establish user profile
+if (localStorage.getItem("profile")) {
+} else {
+    localStorage.setItem("profile", prompt("Who are you controlling?"));
+}
+
 // Fill the table based on the positions
 function placeTokens() {
     // Create the table
@@ -91,7 +98,7 @@ function placeTokens() {
         const tokenTop = cellRect.top - bodyRect.top + (cellRect.height - tokenHeight) / 2;
         const tokenLeft = cellRect.left - bodyRect.left + (cellRect.width - tokenWidth) / 2;
 
-        if (positions[i].controlling) {
+        if (positions[i].controlling && (positions[i].token_name == localStorage.getItem("profile") || localStorage.getItem("profile") == GMcode)) {
             directions.forEach((direction) => {
                 let arrow = document.createElement("div");
                 arrow.classList.add("arrow", direction);
@@ -141,7 +148,7 @@ function changeControlling(position) {
     positions[controlling].controlling = true;
 
     displayHeader();
-    document.getElementById("creatureName").innerText = "Name: " + positions[position].token_name;
+    document.getElementById("creatureName").innerText = `Name: ${positions[position].token_name} | AC: ${positions[position].ac}`;
     placeTokens();
 }
 
@@ -235,39 +242,15 @@ document.getElementById("nextInitiative").onclick = () => {
     positions[positions.length] = first;
     makeOrderList();
 };
-document.addEventListener("keydown", (key) => {
-    console.log(key.key);
-    if (key.key === " ") {
-        let first = positions.shift();
-        positions[positions.length] = first;
-        makeOrderList();
-    }
-});
 
 function manageHealth(button) {
-    let hp = positions[controlling].hp;
-    let hpMax = positions[controlling].hpMax;
-    console.log("Next Round");
-    console.log(hp);
-    console.log(hpMax);
-    switch (button) {
-        case "Damage":
-            let damage = document.getElementById("value").value;
-            damage = Math.max(damage, 0);
-            console.log(damage);
-            positions[controlling].hp = hp - damage;
-            positions[controlling].hp = hp > 0 ? (hp > hpMax ? hpMax : hp) : 0;
-            break;
-        case "Heal":
-            let healing = document.getElementById("value").value;
-            console.log(healing);
-            positions[controlling].hp = hp + healing;
-            positions[controlling].hp = hp >= hpMax ? hpMax : hp;
-            break;
-        default:
-            break;
+    if (localStorage.getItem("profile") == positions[controlling].token_name || localStorage.getItem("profile") == GMcode) {
+        let hp = Number(positions[controlling].hp);
+        let hpMax = Number(positions[controlling].hpMax);
+        let damage = document.getElementById("value").value;
+        positions[controlling].hp = hp + (button == "Damage" ? -1 : 1) * damage;
+        displayHeader();
     }
-    displayHeader();
 }
 
 function displayHeader() {
@@ -313,14 +296,18 @@ while (!positions[0].turn) {
     positions[positions.length] = first;
 }
 
-function makeOrderList(params) {
+function makeOrderList() {
     initiativeTracker.innerHTML = "";
     for (let i = 0; i < positions.length; i++) {
         const element = document.createElement("h5");
         element.innerHTML = positions[i].token_name;
         initiativeTracker.appendChild(element);
     }
-    document.getElementById("nextInitiativefunc");
+    if (!positions[0].isPlayer) {
+        const img = document.createElement("img");
+        img.src = positions[0].stats;
+        initiativeTracker.appendChild(img);
+    }
     placeTokens();
 }
 

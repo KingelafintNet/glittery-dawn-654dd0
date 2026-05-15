@@ -132,9 +132,10 @@ nav {
 
 #hpText {
     font-size: 100%;
-    color: black;
+    color: var(--gold);
     z-index: 100;
     position: absolute;
+    font-weight: bold;
 }
 
 nav #value {
@@ -185,4 +186,15 @@ nav > button {
 #initiativeTracker > h5 {
     margin: 5px;
     color: var(--gold);
+}
+#initiativeTracker > img {
+    position: absolute;
+    right: 0px;
+    height: 15vw;
+    transform-origin: top right;
+}
+#initiativeTracker > img:hover {
+    position: fixed;
+    top: 0px;
+    height: 100vh;
 }
