@@ -38,11 +38,13 @@ supabase
             const index = positions.findIndex((p) => p.token_name === payload.new.token_name);
             if (index !== -1) {
                 positions[index] = payload.new;
+                console.log("Updated positions:", payload.new);
+                console.log("Old positions:", payload.new);
             }
+            placeTokens();
         } else if (payload.eventType === "DELETE") {
             positions = positions.filter((p) => p.token_name !== payload.old.token_name);
         }
-        placeTokens();
     })
     .subscribe();
 
@@ -236,7 +238,6 @@ document.getElementById("nextInitiative").onclick = () => {
     makeOrderList();
 };
 document.addEventListener("keydown", (key) => {
-    console.log(key.key);
     if (key.key === " ") {
         let first = positions.shift();
         positions[positions.length] = first;
@@ -247,22 +248,15 @@ document.addEventListener("keydown", (key) => {
 function manageHealth(button) {
     let hp = positions[controlling].hp;
     let hpMax = positions[controlling].hpMax;
-    console.log("Next Round");
-    console.log(hp);
-    console.log(hpMax);
     switch (button) {
         case "Damage":
             let damage = document.getElementById("value").value;
             damage = Math.max(damage, 0);
-            console.log(damage);
-            positions[controlling].hp = hp - damage;
-            positions[controlling].hp = hp > 0 ? (hp > hpMax ? hpMax : hp) : 0;
+            positions[controlling].hp = Math.max(hp - damage, 0);
             break;
         case "Heal":
-            let healing = document.getElementById("value").value;
-            console.log(healing);
-            positions[controlling].hp = hp + healing;
-            positions[controlling].hp = hp >= hpMax ? hpMax : hp;
+            let healing = Number(document.getElementById("value").value);
+            positions[controlling].hp = Number(hp) + healing;
             break;
         default:
             break;
