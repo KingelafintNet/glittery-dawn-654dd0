@@ -1,7 +1,7 @@
 // Supabase configuration - REPLACE THESE WITH YOUR VALUES
 
-let width = 20;
-let height = 12;
+let width = 21;
+let height = 24;
 let positions;
 let shadows = [];
 

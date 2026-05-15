@@ -21,6 +21,9 @@ body {
 
 table {
     border-collapse: collapse;
+    background-image: url(https://ksetlpqassfnkbchpttc.supabase.co/storage/v1/object/public/pictures/0.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 td {
