@@ -33,19 +33,7 @@ if (error) {
 supabase
     .channel("public:Tokens")
     .on("postgres_changes", { event: "*", schema: "public", table: "Tokens" }, (payload) => {
-        if (payload.eventType === "INSERT") {
-            positions.push(payload.new);
-        } else if (payload.eventType === "UPDATE") {
-            const index = positions.findIndex((p) => p.token_name === payload.new.token_name);
-            if (index !== -1) {
-                positions[index] = payload.new;
-                console.log("Updated positions:", payload.new);
-                console.log("Old positions:", payload.new);
-            }
-            placeTokens();
-        } else if (payload.eventType === "DELETE") {
-            positions = positions.filter((p) => p.token_name !== payload.old.token_name);
-        }
+        setTimeout(window.location.reload(), 10000);
     })
     .subscribe();
 
