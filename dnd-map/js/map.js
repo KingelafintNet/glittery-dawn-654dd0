@@ -1,17 +1,19 @@
 // Supabase configuration - REPLACE THESE WITH YOUR VALUES
 
-const SUPABASE_URL = "https://ksetlpqassfnkbchpttc.supabase.co";
-const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzZXRscHFhc3NmbmtiY2hwdHRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MzU2NTksImV4cCI6MjA5NDExMTY1OX0.FsT-nXL-f_x6ws6Gdm6aC7DXeV62SPpgtuEJ3Gmn4Jo";
 let width = 20;
 let height = 12;
 let positions;
 let shadows = [];
 
+const SUPABASE_URL = "https://ksetlpqassfnkbchpttc.supabase.co";
+const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzZXRscHFhc3NmbmtiY2hwdHRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MzU2NTksImV4cCI6MjA5NDExMTY1OX0.FsT-nXL-f_x6ws6Gdm6aC7DXeV62SPpgtuEJ3Gmn4Jo";
 let size = [15, 25, 50, 100, 150, 200];
 let directions = ["right", "down", "left", "up"];
+let initiativeTracker = document.getElementById("initiativeTracker");
 
 let controlling = 0;
+let pictures = [];
 
 // Initialize Supabase client
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -43,6 +45,12 @@ supabase
         placeTokens();
     })
     .subscribe();
+
+for (let i = 0; i < positions.length; i++) {
+    const element = positions[i];
+    const { data } = await supabase.storage.from("pictures").getPublicUrl(element.picture);
+    positions[i].picture = data.publicUrl;
+}
 
 const arrowLayer = document.createElement("div");
 arrowLayer.classList.add("arrow-layer");
@@ -125,17 +133,22 @@ function placeTokens() {
         shade.style.height = String(size[element.size] + 2) + "px";
         table.rows[element.y].cells[element.x].appendChild(shade);
     }
+    displayHeader();
 }
 function changeControlling(position) {
     positions[controlling].controlling = false;
     controlling = position;
     positions[controlling].controlling = true;
+
+    displayHeader();
+    document.getElementById("creatureName").innerText = "Name: " + positions[position].token_name;
     placeTokens();
 }
 
 function moveToken(direction, index) {
     let state = positions[index];
     if (!state.shade) {
+        positions[index].shadeIndex = shadows.length;
         shadows.push({ ...state });
         positions[index].shade = true;
     }
@@ -147,7 +160,6 @@ function moveToken(direction, index) {
         } catch {
             Class = "no element";
         }
-        console.log(Class);
         if (element.innerHTML == "" || Class == "shade") {
             state.x--;
         }
@@ -160,7 +172,6 @@ function moveToken(direction, index) {
         } catch {
             Class = "no element";
         }
-        console.log(Class);
         if (element.innerHTML == "" || Class == "shade") {
             state.x++;
         }
@@ -173,7 +184,6 @@ function moveToken(direction, index) {
         } catch {
             Class = "no element";
         }
-        console.log(Class);
         if (element.innerHTML == "" || Class == "shade") {
             state.y--;
         }
@@ -186,11 +196,131 @@ function moveToken(direction, index) {
         } catch {
             Class = "no element";
         }
-        console.log(Class);
         if (element.innerHTML == "" || Class == "shade") {
             state.y++;
         }
     }
+    placeTokens();
+}
+
+let buttons = ["Damage", "Heal"];
+for (let i = 0; i < buttons.length; i++) {
+    const element = buttons[i];
+    document.getElementById(element).onclick = () => {
+        manageHealth(element);
+    };
+}
+document.getElementById("Update").onclick = async () => {
+    for (let i = 0; i < positions.length; i++) {
+        let el = positions[i];
+        let position = {
+            initiative: el.initiative,
+            hp: el.hp,
+            hpMax: el.hpMax,
+            ac: el.ac,
+            isPlayer: el.isPlayer,
+            turn: el.turn,
+            x: el.x,
+            y: el.y,
+            size: el.size,
+        };
+        const { error } = await supabase.from("Tokens").update(position).eq("token_name", positions[i].token_name);
+    }
+};
+document.getElementById("showOrderTracker").onclick = () => {
+    makeOrderList();
+};
+document.getElementById("nextInitiative").onclick = () => {
+    let first = positions.shift();
+    positions[positions.length] = first;
+    makeOrderList();
+};
+document.addEventListener("keydown", (key) => {
+    console.log(key.key);
+    if (key.key === " ") {
+        let first = positions.shift();
+        positions[positions.length] = first;
+        makeOrderList();
+    }
+});
+
+function manageHealth(button) {
+    let hp = positions[controlling].hp;
+    let hpMax = positions[controlling].hpMax;
+    console.log("Next Round");
+    console.log(hp);
+    console.log(hpMax);
+    switch (button) {
+        case "Damage":
+            let damage = document.getElementById("value").value;
+            damage = Math.max(damage, 0);
+            console.log(damage);
+            positions[controlling].hp = hp - damage;
+            positions[controlling].hp = hp > 0 ? (hp > hpMax ? hpMax : hp) : 0;
+            break;
+        case "Heal":
+            let healing = document.getElementById("value").value;
+            console.log(healing);
+            positions[controlling].hp = hp + healing;
+            positions[controlling].hp = hp >= hpMax ? hpMax : hp;
+            break;
+        default:
+            break;
+    }
+    displayHeader();
+}
+
+function displayHeader() {
+    let color1 = document.getElementById("hpColor1");
+    let color2 = document.getElementById("hpColor2");
+    let left;
+    let color = "hsl(" + String((120 * positions[controlling].hp) / positions[controlling].hpMax) + ",100%,50%)";
+    document.getElementById("hpText").innerHTML = `<span>${positions[controlling].hp}/${positions[controlling].hpMax}</span>`;
+    left = (positions[controlling].hp / positions[controlling].hpMax) * 180 - 90;
+    if (positions[controlling].hp / positions[controlling].hpMax > 0.5) {
+        left = left - 90;
+        color2.style.backgroundColor = color;
+    } else {
+        color2.style.backgroundColor = "var(--navy)";
+    }
+    color1.style.backgroundColor = color;
+    color2.style.left = String(left) + "px";
+
+    let distanceText = document.getElementById("distance");
+    try {
+        let currentReal = positions[controlling];
+        let xDiff = shadows[currentReal.shadeIndex].x - currentReal.x;
+        let yDiff = shadows[currentReal.shadeIndex].y - currentReal.y;
+        let final = Math.floor(Math.sqrt(xDiff ** 2 + yDiff ** 2) * 5);
+        distanceText.innerText = `Distance moved: ${final} feet`;
+    } catch (error) {}
+}
+
+// Initial sort for the the order tracker
+for (let i = 0; i < positions.length; i++) {
+    for (let j = 0; j < positions.length - i - 1; j++) {
+        if (positions[j].initiative < positions[j + 1].initiative) {
+            // Swap elements
+            let temp = positions[j];
+            positions[j] = positions[j + 1];
+            positions[j + 1] = temp;
+        }
+    }
+}
+// Put first in first
+while (!positions[0].turn) {
+    let first = positions.shift();
+    positions[positions.length] = first;
+}
+
+function makeOrderList(params) {
+    initiativeTracker.innerHTML = "";
+    for (let i = 0; i < positions.length; i++) {
+        const element = document.createElement("h5");
+        element.innerHTML = positions[i].token_name;
+        initiativeTracker.appendChild(element);
+    }
+    document.getElementById("nextInitiativefunc");
     placeTokens();
 }
 

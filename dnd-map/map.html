@@ -4,14 +4,31 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <script defer src="map.js" type="module"></script>
-        <link rel="stylesheet" href="map.css" />
+        <script defer src="./js/map.js" type="module"></script>
+        <link rel="stylesheet" href="./css/map.css" />
         <title>Battle Map</title>
     </head>
     <body>
-        <nav></nav>
+        <nav>
+            <span id="creatureName" style="color: var(--gold)">Name: </span>
+            <div id="hpBar">
+                <div>
+                    <div id="hpColor1">&nbsp;</div>
+                    <div id="hpColor2">&nbsp;</div>
+                </div>
+                <span id="hpText"></span>
+            </div>
+            <input type="number" name="value" id="value" />
+            <button type="button" id="Damage" style="color: rgb(255, 0, 0); font-weight: bold">Damage</button>
+            <button type="button" id="Heal" style="color: rgb(135, 255, 79); font-weight: bold">Heal</button>
+            <span id="distance" style="color: var(--gold)">Distance moved: </span>
+            <button type="button" id="Update" style="color: var(--gold)">Update</button>
+            <button type="button" id="showOrderTracker">Order</button>
+            <button type="button" id="nextInitiative">Next</button>
+        </nav>
         <table id="map">
             <!-- The map will be generated here by JavaScript -->
         </table>
+        <div id="initiativeTracker"></div>
     </body>
 </html>
