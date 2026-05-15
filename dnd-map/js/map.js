@@ -39,11 +39,13 @@ supabase
             const index = positions.findIndex((p) => p.token_name === payload.new.token_name);
             if (index !== -1) {
                 positions[index] = payload.new;
+                console.log("Updated positions:", payload.new);
+                console.log("Old positions:", payload.new);
             }
+            placeTokens();
         } else if (payload.eventType === "DELETE") {
             positions = positions.filter((p) => p.token_name !== payload.old.token_name);
         }
-        placeTokens();
     })
     .subscribe();
 
