@@ -293,7 +293,7 @@ function makeOrderList() {
         element.innerHTML = positions[i].token_name;
         initiativeTracker.appendChild(element);
     }
-    if (!positions[0].isPlayer) {
+    if (!positions[0].isPlayer && localStorage.getItem("profile" == GMcode)) {
         const img = document.createElement("img");
         img.src = positions[0].stats;
         initiativeTracker.appendChild(img);
