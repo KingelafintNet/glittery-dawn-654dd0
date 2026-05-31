@@ -219,8 +219,27 @@ document.getElementById("showOrderTracker").onclick = () => {
     makeOrderList();
 };
 document.getElementById("nextInitiative").onclick = () => {
+    if (true) {
+        let state = positions[0];
+        if (!state.shade) {
+            positions[0].shadeIndex = shadows.length;
+            shadows.push({ ...state });
+            positions[0].shade = true;
+        }
+    }
+    if (true) {
+        let state = positions[1];
+        if (!state.shade) {
+            positions[1].shadeIndex = shadows.length;
+            shadows.push({ ...state });
+            positions[1].shade = true;
+        }
+    }
+    positions[0].turn = !positions[0].turn;
     let first = positions.shift();
     positions[positions.length] = first;
+    positions[0].turn = !positions[0].turn;
+
     makeOrderList();
 };
 
