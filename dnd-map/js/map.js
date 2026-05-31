@@ -1,17 +1,18 @@
 // Supabase configuration - REPLACE THESE WITH YOUR VALUES
 
-let width = 21;
-let height = 24;
 let positions;
 let shadows = [];
 
 const SUPABASE_URL = "https://ksetlpqassfnkbchpttc.supabase.co";
 const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzZXRscHFhc3NmbmtiY2hwdHRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MzU2NTksImV4cCI6MjA5NDExMTY1OX0.FsT-nXL-f_x6ws6Gdm6aC7DXeV62SPpgtuEJ3Gmn4Jo";
-let size = [15, 25, 50, 100, 150, 200];
-let directions = ["right", "down", "left", "up"];
-let initiativeTracker = document.getElementById("initiativeTracker");
-let GMcode = "HoppingFrog";
+const size = [15, 25, 50, 100, 150, 200];
+const directions = ["right", "down", "left", "up"];
+const initiativeTracker = document.getElementById("initiativeTracker");
+const urlParams = new URLSearchParams(window.location.search);
+let GMcode;
+let width;
+let height;
 
 let controlling = 0;
 let pictures = [];
@@ -19,14 +20,36 @@ let pictures = [];
 // Initialize Supabase client
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Fetch positions from Supabase
-const { data, error } = await supabase.from("Tokens").select("*");
+// Get overall information from Supabase
+if (true) {
+    if (urlParams.get("battleName")) {
+    } else {
+        localStorage.clear();
+        const url = new URL(window.location);
+        url.searchParams.set("battleName", prompt("Get a battle code from your DM and paste it here"));
+        window.location.replace(url.toString());
+    }
+    const { data, error } = await supabase.from("Battles").select("*").eq("battle", urlParams.get("battleName")).single();
+    if (error) {
+        console.error("Error fetching battle data:", error);
+    } else {
+        GMcode = data.GMcode;
+        height = data.height;
+        width = data.width;
+        document.querySelector("table").style.backgroundImage = `url(${data.background})`;
+    }
+}
 
-if (error) {
-    console.error("Error fetching positions:", error);
-    positions = [];
-} else {
-    positions = data;
+// Fetch positions from Supabase
+if (true) {
+    const { data, error } = await supabase.from("Tokens").select("*").eq("battle", urlParams.get("battleName"));
+
+    if (error) {
+        console.error("Error fetching positions:", error);
+        positions = [];
+    } else {
+        positions = data;
+    }
 }
 
 // Subscribe to real-time updates
@@ -48,9 +71,13 @@ arrowLayer.classList.add("arrow-layer");
 document.body.appendChild(arrowLayer);
 
 // Establish user profile
-if (localStorage.getItem("profile")) {
+if (urlParams.get("profile")) {
+    localStorage.setItem("profile", urlParams.get("profile"));
 } else {
-    localStorage.setItem("profile", prompt("Who are you controlling?"));
+    if (localStorage.getItem("profile")) {
+    } else {
+        localStorage.setItem("profile", prompt("Who are you controlling?"));
+    }
 }
 
 // Fill the table based on the positions
@@ -208,8 +235,10 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 document.getElementById("Update").onclick = async () => {
-    for (let i = 0; i < positions.length; i++) {
-        let el = positions[i];
+    console.log(positions);
+    console.log(shadows);
+    for (let i = 0; i < shadows.length; i++) {
+        let el = positions.find((t) => t.token_name === shadows[i].token_name);
         let position = {
             initiative: el.initiative,
             hp: el.hp,
@@ -221,7 +250,8 @@ document.getElementById("Update").onclick = async () => {
             y: el.y,
             size: el.size,
         };
-        const { error } = await supabase.from("Tokens").update(position).eq("token_name", positions[i].token_name);
+        const { error } = await supabase.from("Tokens").update(position).eq("token_name", positions[i].token_name).eq("battle", urlParams.get("battleName"));
+        console.log(error);
     }
 };
 document.getElementById("showOrderTracker").onclick = () => {
@@ -289,7 +319,7 @@ while (!positions[0].turn) {
 function makeOrderList() {
     initiativeTracker.innerHTML = "";
     for (let i = 0; i < positions.length; i++) {
-        const element = document.createElement("h5");
+        const element = document.createElement("h4");
         element.innerHTML = positions[i].token_name;
         initiativeTracker.appendChild(element);
     }
@@ -301,4 +331,4 @@ function makeOrderList() {
     placeTokens();
 }
 
-placeTokens();
+makeOrderList();
