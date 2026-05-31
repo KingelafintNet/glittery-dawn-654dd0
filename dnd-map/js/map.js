@@ -177,52 +177,16 @@ function moveToken(direction, index) {
         positions[index].shade = true;
     }
     if (direction === "left") {
-        const element = document.getElementById("map").rows[state.y].cells[state.x - 2];
-        let Class;
-        try {
-            Class = element.children[0].getAttribute("class");
-        } catch {
-            Class = "no element";
-        }
-        if (element.innerHTML == "" || Class == "shade") {
-            state.x--;
-        }
+        state.x--;
     }
     if (direction === "right") {
-        const element = document.getElementById("map").rows[state.y].cells[state.x + 2];
-        let Class;
-        try {
-            Class = element.children[0].getAttribute("class");
-        } catch {
-            Class = "no element";
-        }
-        if (element.innerHTML == "" || Class == "shade") {
-            state.x++;
-        }
+        state.x++;
     }
     if (direction === "up") {
-        const element = document.getElementById("map").rows[state.y - 2].cells[state.x];
-        let Class;
-        try {
-            Class = element.children[0].getAttribute("class");
-        } catch {
-            Class = "no element";
-        }
-        if (element.innerHTML == "" || Class == "shade") {
-            state.y--;
-        }
+        state.y--;
     }
     if (direction === "down") {
-        const element = document.getElementById("map").rows[state.y + 2].cells[state.x];
-        let Class;
-        try {
-            Class = element.children[0].getAttribute("class");
-        } catch {
-            Class = "no element";
-        }
-        if (element.innerHTML == "" || Class == "shade") {
-            state.y++;
-        }
+        state.y++;
     }
     placeTokens();
 }
@@ -239,13 +203,15 @@ document.getElementById("Update").onclick = async () => {
     console.log(shadows);
     for (let i = 0; i < shadows.length; i++) {
         let el = positions.find((t) => t.token_name === shadows[i].token_name);
+        console.log(el);
+        console.log(i);
         let position = {
             hp: el.hp,
             turn: el.turn,
             x: el.x,
             y: el.y,
         };
-        const { error } = await supabase.from("Tokens").update(position).eq("token_name", positions[i].token_name).eq("battle", urlParams.get("battleName"));
+        const { error } = await supabase.from("Tokens").update(position).eq("token_name", shadows[i].token_name).eq("battle", urlParams.get("battleName"));
         console.log(error);
     }
 };
