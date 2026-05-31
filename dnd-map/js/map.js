@@ -1,4 +1,4 @@
-// Supabase configuration - REPLACE THESE WITH YOUR VALUES
+// Supabase configuration
 
 let positions;
 let shadows = [];
@@ -99,8 +99,8 @@ function placeTokens() {
         let token = document.createElement("div");
         token.innerHTML = `<div style="height:${size[element.size]}px; width:${size[element.size]}px;"><img src="${element.picture}"></div>`;
         token.classList.add("token");
-        token.style.width = String(size[element.size] + 2) + "px";
-        token.style.height = String(size[element.size] + 2) + "px";
+        token.style.width = String(size[element.size]) + "px";
+        token.style.height = String(size[element.size]) + "px";
         token.style.borderColor = positions[i].isPlayer ? "var(--hero)" : "var(--enemy)";
 
         token.addEventListener("click", () => {
@@ -240,15 +240,10 @@ document.getElementById("Update").onclick = async () => {
     for (let i = 0; i < shadows.length; i++) {
         let el = positions.find((t) => t.token_name === shadows[i].token_name);
         let position = {
-            initiative: el.initiative,
             hp: el.hp,
-            hpMax: el.hpMax,
-            ac: el.ac,
-            isPlayer: el.isPlayer,
             turn: el.turn,
             x: el.x,
             y: el.y,
-            size: el.size,
         };
         const { error } = await supabase.from("Tokens").update(position).eq("token_name", positions[i].token_name).eq("battle", urlParams.get("battleName"));
         console.log(error);
@@ -311,7 +306,10 @@ for (let i = 0; i < positions.length; i++) {
     }
 }
 // Put first in first
-while (!positions[0].turn) {
+for (let i = 0; i < positions.length; i++) {
+    if (!positions[0].turn) {
+        break;
+    }
     let first = positions.shift();
     positions[positions.length] = first;
 }
