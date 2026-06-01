@@ -57,6 +57,7 @@ supabase
     .channel("public:Tokens")
     .on("postgres_changes", { event: "*", schema: "public", table: "Tokens" }, (payload) => {
         setTimeout(window.location.reload(), 10000);
+        // setTimeout(console.log("reload"), 10000);
     })
     .subscribe();
 
@@ -101,7 +102,7 @@ function placeTokens() {
         token.classList.add("token");
         token.style.width = String(size[element.size]) + "px";
         token.style.height = String(size[element.size]) + "px";
-        token.style.borderColor = positions[i].isPlayer ? "var(--hero)" : "var(--enemy)";
+        token.style.borderColor = positions[i].turn ? "var(--turn)" : positions[i].isPlayer ? "var(--hero)" : "var(--enemy)";
 
         token.addEventListener("click", () => {
             changeControlling(i);
@@ -199,26 +200,29 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 document.getElementById("Update").onclick = async () => {
-    console.log(positions);
-    console.log(shadows);
+    let updates = [];
     for (let i = 0; i < shadows.length; i++) {
         let el = positions.find((t) => t.token_name === shadows[i].token_name);
-        console.log(el);
-        console.log(i);
-        let position = {
+        updates.push({
+            battle: urlParams.get("battleName"),
+            token_name: shadows[i].token_name,
             hp: el.hp,
             turn: el.turn,
             x: el.x,
             y: el.y,
-        };
-        const { error } = await supabase.from("Tokens").update(position).eq("token_name", shadows[i].token_name).eq("battle", urlParams.get("battleName"));
-        console.log(error);
+        });
     }
+    console.log("log");
+    const { error } = await supabase.from("Tokens").upsert(updates);
 };
+
 document.getElementById("showOrderTracker").onclick = () => {
     makeOrderList();
 };
 document.getElementById("nextInitiative").onclick = () => {
+    nextInitiative();
+};
+function nextInitiative() {
     if (true) {
         let state = positions[0];
         if (!state.shade) {
@@ -227,21 +231,22 @@ document.getElementById("nextInitiative").onclick = () => {
             positions[0].shade = true;
         }
     }
-    if (true) {
-        let state = positions[1];
-        if (!state.shade) {
-            positions[1].shadeIndex = shadows.length;
-            shadows.push({ ...state });
-            positions[1].shade = true;
-        }
-    }
-    positions[0].turn = !positions[0].turn;
+    positions[0].turn = false;
     let first = positions.shift();
     positions[positions.length] = first;
-    positions[0].turn = !positions[0].turn;
+    positions[0].turn = true;
 
+    if (true) {
+        let state = positions[0];
+        if (!state.shade) {
+            positions[0].shadeIndex = shadows.length;
+            shadows.push({ ...state });
+            positions[0].shade = true;
+        }
+    }
+    console.log(shadows);
     makeOrderList();
-};
+}
 
 function manageHealth(button) {
     if (localStorage.getItem("profile") == positions[controlling].token_name || localStorage.getItem("profile") == GMcode) {
@@ -292,7 +297,7 @@ for (let i = 0; i < positions.length; i++) {
 }
 // Put first in first
 for (let i = 0; i < positions.length; i++) {
-    if (!positions[0].turn) {
+    if (positions[0].turn) {
         break;
     }
     let first = positions.shift();
