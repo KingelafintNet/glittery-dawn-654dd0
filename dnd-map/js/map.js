@@ -1,15 +1,17 @@
 // Supabase configuration
 
-let positions;
+let positions = [];
 let shadows = [];
 
 const SUPABASE_URL = "https://ksetlpqassfnkbchpttc.supabase.co";
 const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzZXRscHFhc3NmbmtiY2hwdHRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MzU2NTksImV4cCI6MjA5NDExMTY1OX0.FsT-nXL-f_x6ws6Gdm6aC7DXeV62SPpgtuEJ3Gmn4Jo";
 const size = [15, 25, 50, 100, 150, 200];
-const directions = ["right", "down", "left", "up"];
+const directions = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"];
 const initiativeTracker = document.getElementById("initiativeTracker");
 const urlParams = new URLSearchParams(window.location.search);
+const table = document.getElementById("map");
+
 let GMcode;
 let width;
 let height;
@@ -56,8 +58,13 @@ if (true) {
 supabase
     .channel("public:Tokens")
     .on("postgres_changes", { event: "*", schema: "public", table: "Tokens" }, (payload) => {
-        setTimeout(window.location.reload(), 10000);
-        // setTimeout(console.log("reload"), 10000);
+        const originalIndex = positions.findIndex((place) => {
+            return place.token_name === payload.new.token_name;
+        });
+        payload.new.picture = positions[originalIndex].picture;
+        payload.new.stats = positions[originalIndex].stats;
+        positions[originalIndex] = payload.new;
+        makeOrderList();
     })
     .subscribe();
 
@@ -66,6 +73,25 @@ for (let i = 0; i < positions.length; i++) {
     const { data } = await supabase.storage.from("pictures").getPublicUrl(element.picture);
     positions[i].picture = data.publicUrl;
 }
+
+document.getElementById("Update").onclick = async () => {
+    let updates = [];
+    for (let i = 0; i < shadows.length; i++) {
+        let el = positions.find((t) => t.token_name === shadows[i].token_name);
+        updates.push({
+            battle: urlParams.get("battleName"),
+            token_name: shadows[i].token_name,
+            hp: el.hp,
+            turn: el.turn,
+            x: el.x,
+            y: el.y,
+        });
+    }
+    const { error } = await supabase.from("Tokens").upsert(updates);
+    shadows = [];
+};
+
+// End of Supabase stuff
 
 const arrowLayer = document.createElement("div");
 arrowLayer.classList.add("arrow-layer");
@@ -80,20 +106,22 @@ if (urlParams.get("profile")) {
         localStorage.setItem("profile", prompt("Who are you controlling?"));
     }
 }
+// Make table
+for (let i = 0; i < height; i++) {
+    let row = document.createElement("tr");
+    for (let j = 0; j < width; j++) {
+        let cell = document.createElement("td");
+        row.appendChild(cell);
+    }
+    table.appendChild(row);
+}
+const blankTable = table.innerHTML;
 
 // Fill the table based on the positions
 function placeTokens() {
-    // Create the table
-    let table = document.getElementById("map");
-    table.innerHTML = "";
-    for (let i = 0; i < height; i++) {
-        let row = document.createElement("tr");
-        for (let j = 0; j < width; j++) {
-            let cell = document.createElement("td");
-            row.appendChild(cell);
-        }
-        table.appendChild(row);
-    }
+    // Reset the table
+    table.innerHTML = blankTable;
+
     arrowLayer.innerHTML = "";
     for (let i = 0; i < positions.length; i++) {
         const element = positions[i];
@@ -132,13 +160,13 @@ function placeTokens() {
                 let arrowTop = -6 + tokenTop + (tokenHeight - arrowHeight) / 2;
                 let arrowLeft = -6 + tokenLeft + (tokenWidth - arrowWidth) / 2;
 
-                if (direction === "up") {
+                if (direction === "ArrowUp") {
                     arrowTop = tokenTop - 40;
-                } else if (direction === "down") {
+                } else if (direction === "ArrowDown") {
                     arrowTop = tokenTop + tokenHeight - 12;
-                } else if (direction === "left") {
+                } else if (direction === "ArrowLeft") {
                     arrowLeft = tokenLeft - 30;
-                } else if (direction === "right") {
+                } else if (direction === "ArrowRight") {
                     arrowLeft = tokenLeft + tokenWidth;
                 }
 
@@ -172,25 +200,35 @@ function changeControlling(position) {
 
 function moveToken(direction, index) {
     let state = positions[index];
-    if (!state.shade) {
-        positions[index].shadeIndex = shadows.length;
-        shadows.push({ ...state });
-        positions[index].shade = true;
+    if (directions.includes(direction)) {
+        if (
+            shadows.filter((shade) => {
+                return shade.token_name === state.token_name;
+            }).length === 0
+        ) {
+            positions[index].shadeIndex = shadows.length;
+            shadows.push({ ...state });
+        }
+        if (direction === "ArrowLeft") {
+            state.x--;
+        } else if (direction === "ArrowRight") {
+            state.x++;
+        } else if (direction === "ArrowUp") {
+            state.y--;
+        } else if (direction === "ArrowDown") {
+            state.y++;
+        }
+        placeTokens();
     }
-    if (direction === "left") {
-        state.x--;
-    }
-    if (direction === "right") {
-        state.x++;
-    }
-    if (direction === "up") {
-        state.y--;
-    }
-    if (direction === "down") {
-        state.y++;
-    }
-    placeTokens();
 }
+
+document.addEventListener("keydown", (key) => {
+    moveToken(key.key, controlling);
+    if (key.key === "Tab") {
+        console.log((controlling + 1) % positions.length);
+        changeControlling((controlling + 1) % positions.length);
+    }
+});
 
 let buttons = ["Damage", "Heal"];
 for (let i = 0; i < buttons.length; i++) {
@@ -199,22 +237,6 @@ for (let i = 0; i < buttons.length; i++) {
         manageHealth(element);
     };
 }
-document.getElementById("Update").onclick = async () => {
-    let updates = [];
-    for (let i = 0; i < shadows.length; i++) {
-        let el = positions.find((t) => t.token_name === shadows[i].token_name);
-        updates.push({
-            battle: urlParams.get("battleName"),
-            token_name: shadows[i].token_name,
-            hp: el.hp,
-            turn: el.turn,
-            x: el.x,
-            y: el.y,
-        });
-    }
-    console.log("log");
-    const { error } = await supabase.from("Tokens").upsert(updates);
-};
 
 document.getElementById("showOrderTracker").onclick = () => {
     makeOrderList();
@@ -244,7 +266,6 @@ function nextInitiative() {
             positions[0].shade = true;
         }
     }
-    console.log(shadows);
     makeOrderList();
 }
 

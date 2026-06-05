@@ -103,13 +103,13 @@ td {
     justify-content: center;
     z-index: 999999;
 }
-.up {
+.ArrowUp {
     transform: rotate(90deg);
 }
-.down {
+.ArrowDown {
     transform: rotate(270deg);
 }
-.right {
+.ArrowRight {
     transform: rotate(180deg);
 }
 .arrow-layer {
