@@ -119,6 +119,16 @@ const blankTable = table.innerHTML;
 
 // Fill the table based on the positions
 function placeTokens() {
+    // Make the favicon the picture for the character
+    document.querySelectorAll("link").forEach((a) => {
+        if (a.rel == "icon") {
+            a.remove();
+        }
+    });
+    const favicon = document.createElement("link");
+    favicon.rel = "icon";
+    favicon.href = positions[controlling].picture;
+    document.querySelector("head").appendChild(favicon);
     // Reset the table
     table.innerHTML = blankTable;
 
