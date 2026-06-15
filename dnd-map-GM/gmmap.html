@@ -9,23 +9,68 @@
         <script src="./js/main.js" type="module" defer></script>
     </head>
     <body>
-        <!-- <div id="auth">
+        <div id="auth">
             <div>
                 <input type="text" name="authInput" id="authInput" />
                 <button type="button" id="authButton">Submit Password</button>
             </div>
-        </div> -->
-        <h1>GM Map Creator</h1>
-        <span>
-            Battle Name:
-            <input type="text" name="" id="battleName" />
-        </span>
-        <br /><br />
-        <span>
-            GM Code:
-            <input type="text" name="" id="GMCode" />
-        </span>
-        <br /><br />
-        <button type="button" id="upload">Upload to the database</button>
+        </div>
+        <main>
+            <div id="text-info">
+                <h1>GM Map Creator</h1>
+                <span>
+                    Battle Name:
+                    <input type="text" name="" id="battleName" />
+                </span>
+                <br /><br />
+                <span>
+                    GM Code:
+                    <input type="text" name="" id="GMCode" />
+                </span>
+                <br /><br />
+                <button type="button" id="upload">Upload to the database</button>
+            </div>
+            <!-- Map editor -->
+            <div id="map-editor">
+                <div>
+                    <button id="+1">+</button>
+                    <button id="-1">-</button>
+                </div>
+                <div>
+                    <span id="dimensions">Horizontal: 3, Vertical: 3</span>
+                    <div>
+                        <button id="+2">+</button>
+                        <button id="-2">-</button>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <button id="+4">+</button>
+                        <button id="-4">-</button>
+                    </div>
+                </div>
+                <div>
+                    <button id="+3">+</button>
+                    <button id="-3">-</button>
+                </div>
+            </div>
+        </main>
     </body>
 </html>

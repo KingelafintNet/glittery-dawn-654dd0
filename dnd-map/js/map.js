@@ -280,7 +280,16 @@ function nextInitiative() {
 }
 
 function manageHealth(button) {
-    if (localStorage.getItem("profile") == positions[controlling].token_name || localStorage.getItem("profile") == GMcode) {
+    let state = positions[controlling];
+    if (
+        shadows.filter((shade) => {
+            return shade.token_name === state.token_name;
+        }).length === 0
+    ) {
+        positions[index].shadeIndex = shadows.length;
+        shadows.push({ ...state });
+    }
+    if (localStorage.getItem("profile") == state.token_name || localStorage.getItem("profile") == GMcode) {
         let hp = Number(positions[controlling].hp);
         let hpMax = Number(positions[controlling].hpMax);
         let damage = document.getElementById("value").value;
