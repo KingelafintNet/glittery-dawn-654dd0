@@ -123,8 +123,6 @@ for (let i = 0; i < backgroundData.length; i++) {
     }
 }
 
-console.log(procBackground);
-
 for (let i = 0; i < height; i++) {
     let row = document.createElement("tr");
     for (let j = 0; j < width; j++) {
@@ -253,10 +251,6 @@ function moveToken(direction, index) {
 
 document.addEventListener("keydown", (key) => {
     moveToken(key.key, controlling);
-    if (key.key === "Tab") {
-        console.log((controlling + 1) % positions.length);
-        changeControlling((controlling + 1) % positions.length);
-    }
 });
 
 let buttons = ["Damage", "Heal"];
@@ -267,9 +261,6 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 
-document.getElementById("showOrderTracker").onclick = () => {
-    makeOrderList();
-};
 document.getElementById("nextInitiative").onclick = () => {
     nextInitiative();
 };
@@ -359,16 +350,18 @@ for (let i = 0; i < positions.length; i++) {
     if (positions[0].turn) {
         break;
     }
-    let first = positions.shift();
+    const first = positions.shift();
     positions[positions.length] = first;
 }
 
 function makeOrderList() {
     initiativeTracker.innerHTML = "";
     for (let i = 0; i < positions.length; i++) {
-        const element = document.createElement("h4");
-        element.innerHTML = positions[i].token_name;
-        initiativeTracker.appendChild(element);
+        if (positions[i].initiative >= -10) {
+            const element = document.createElement("h4");
+            element.innerHTML = positions[i].token_name;
+            initiativeTracker.appendChild(element);
+        }
     }
     if (localStorage.getItem("profile" == GMcode)) {
         const img = document.createElement("img");
