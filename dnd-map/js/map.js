@@ -15,6 +15,7 @@ const table = document.getElementById("map");
 let GMcode;
 let width;
 let height;
+let backgroundData;
 
 let controlling = 0;
 let pictures = [];
@@ -38,7 +39,7 @@ if (true) {
         GMcode = data.GMcode;
         height = data.height;
         width = data.width;
-        document.querySelector("table").style.backgroundImage = `url(${data.background})`;
+        backgroundData = data.background;
     }
 }
 
@@ -107,10 +108,28 @@ if (urlParams.get("profile")) {
     }
 }
 // Make table
+// process colors
+backgroundData = backgroundData.split("|");
+for (let i = 0; i < backgroundData.length; i++) {
+    const element = backgroundData[i];
+    backgroundData[i] = element.split("+");
+}
+let procBackground = [];
+
+for (let i = 0; i < backgroundData.length; i++) {
+    const element = backgroundData[i];
+    for (let j = 0; j < element[0]; j++) {
+        procBackground.push(element[1]);
+    }
+}
+
+console.log(procBackground);
+
 for (let i = 0; i < height; i++) {
     let row = document.createElement("tr");
     for (let j = 0; j < width; j++) {
         let cell = document.createElement("td");
+        cell.style.backgroundColor = procBackground[i * height + j];
         row.appendChild(cell);
     }
     table.appendChild(row);
@@ -140,7 +159,7 @@ function placeTokens() {
         token.classList.add("token");
         token.style.width = String(size[element.size]) + "px";
         token.style.height = String(size[element.size]) + "px";
-        token.style.borderColor = positions[i].turn ? "var(--turn)" : positions[i].isPlayer ? "var(--hero)" : "var(--enemy)";
+        token.style.borderColor = positions[i].turn ? "var(--turn)" : positions[i].teamColor;
 
         token.addEventListener("click", () => {
             changeControlling(i);
@@ -351,7 +370,7 @@ function makeOrderList() {
         element.innerHTML = positions[i].token_name;
         initiativeTracker.appendChild(element);
     }
-    if (!positions[0].isPlayer && localStorage.getItem("profile" == GMcode)) {
+    if (localStorage.getItem("profile" == GMcode)) {
         const img = document.createElement("img");
         img.src = positions[0].stats;
         initiativeTracker.appendChild(img);

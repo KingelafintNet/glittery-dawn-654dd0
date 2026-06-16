@@ -6,6 +6,7 @@
         <title>GM map creator</title>
         <link rel="stylesheet" href="./css/style.css" />
         <script src="./js/hash_coder.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="./js/main.js" type="module" defer></script>
     </head>
     <body>
@@ -28,47 +29,45 @@
                     <input type="text" name="" id="GMCode" />
                 </span>
                 <br /><br />
-                <button type="button" id="upload">Upload to the database</button>
+                <div id="tokenEditor">
+                    <button type="button">Add Token</button>
+                </div>
+                <br />
+                <button type="button" id="upload">Upload to the Database</button>
             </div>
             <!-- Map editor -->
-            <div id="map-editor">
-                <div>
-                    <button id="+1">+</button>
-                    <button id="-1">-</button>
+            <div id="map-main">
+                <span id="dimensions">Horizontal: 1, Vertical: 1</span>
+                <span>Swatches:</span>
+                <div id="colors">
+                    <div id="add-swatch"><span>+</span></div>
                 </div>
-                <div>
-                    <span id="dimensions">Horizontal: 3, Vertical: 3</span>
+                <div id="map-editor">
                     <div>
-                        <button id="+2">+</button>
-                        <button id="-2">-</button>
+                        <button id="+1">+</button>
+                        <button id="-1">-</button>
                     </div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
                     <div>
-                        <button id="+4">+</button>
-                        <button id="-4">-</button>
+                        <div>
+                            <button id="+2">+</button>
+                            <button id="-2">-</button>
+                        </div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <button id="+4">+</button>
+                            <button id="-4">-</button>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <button id="+3">+</button>
-                    <button id="-3">-</button>
+                    <div>
+                        <button id="+3">+</button>
+                        <button id="-3">-</button>
+                    </div>
                 </div>
             </div>
         </main>
