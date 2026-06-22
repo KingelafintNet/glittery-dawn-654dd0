@@ -18,6 +18,7 @@ let height;
 let backgroundData;
 
 let controlling = 0;
+let showStats = false;
 let pictures = [];
 
 // Initialize Supabase client
@@ -71,8 +72,14 @@ supabase
 
 for (let i = 0; i < positions.length; i++) {
     const element = positions[i];
-    const { data } = await supabase.storage.from("pictures").getPublicUrl(element.picture);
-    positions[i].picture = data.publicUrl;
+    if (true) {
+        const { data } = await supabase.storage.from("pictures").getPublicUrl(element.picture);
+        positions[i].picture = data.publicUrl;
+    }
+    try {
+        const { data } = await supabase.storage.from("pictures").getPublicUrl(element.stats);
+        positions[i].stats = data.publicUrl;
+    } catch (e) {}
 }
 
 document.getElementById("Update").onclick = async () => {
@@ -204,6 +211,8 @@ function placeTokens() {
         }
         table.rows[element.y].cells[element.x].appendChild(token);
     }
+
+    // Write the shades to the map
     for (let i = 0; i < shadows.length; i++) {
         const element = shadows[i];
         let shade = document.createElement("div");
@@ -213,7 +222,14 @@ function placeTokens() {
         shade.style.height = String(size[element.size] + 2) + "px";
         table.rows[element.y].cells[element.x].appendChild(shade);
     }
+
     displayHeader();
+
+    if (showStats) {
+        console.log(positions[controlling].stats);
+        initiativeTracker.lastChild.style.display = "block";
+        initiativeTracker.lastChild.src = positions[controlling].stats;
+    }
 }
 function changeControlling(position) {
     positions[controlling].controlling = false;
@@ -261,6 +277,17 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 
+if (GMcode == localStorage.getItem("profile")) {
+    const statsButton = document.createElement("button");
+    statsButton.type = "button";
+    statsButton.innerText = "Show Selected Stats";
+    statsButton.onclick = () => {
+        showStats = !showStats;
+        placeTokens();
+    };
+    document.querySelector("nav").append(statsButton);
+}
+
 document.getElementById("nextInitiative").onclick = () => {
     nextInitiative();
 };
@@ -296,7 +323,7 @@ function manageHealth(button) {
             return shade.token_name === state.token_name;
         }).length === 0
     ) {
-        positions[index].shadeIndex = shadows.length;
+        positions[controlling].shadeIndex = shadows.length;
         shadows.push({ ...state });
     }
     if (localStorage.getItem("profile") == state.token_name || localStorage.getItem("profile") == GMcode) {
@@ -355,7 +382,7 @@ for (let i = 0; i < positions.length; i++) {
 }
 
 function makeOrderList() {
-    initiativeTracker.innerHTML = "";
+    initiativeTracker.innerHTML = ``;
     for (let i = 0; i < positions.length; i++) {
         if (positions[i].initiative >= -10) {
             const element = document.createElement("h4");
@@ -363,11 +390,7 @@ function makeOrderList() {
             initiativeTracker.appendChild(element);
         }
     }
-    if (localStorage.getItem("profile" == GMcode)) {
-        const img = document.createElement("img");
-        img.src = positions[0].stats;
-        initiativeTracker.appendChild(img);
-    }
+    initiativeTracker.innerHTML += `<img src="" alt="stats" style="display:none">`;
     placeTokens();
 }
 

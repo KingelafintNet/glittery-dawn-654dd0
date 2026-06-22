@@ -1,9 +1,24 @@
 :root {
     --gold: rgb(238, 189, 66);
     --navy: rgb(2, 0, 124);
-    --hero: rgb(0, 24, 202);
-    --enemy: rgb(160, 5, 0);
     --turn: rgb(0, 255, 255);
+}
+
+@font-face {
+    font-family: "cousine";
+    src: url(../../font/Cousine-Regular.ttf);
+}
+
+@font-face {
+    font-family: "cousine";
+    src: url(../../font/Cousine-Bold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "cousine";
+    src: url(../../font/Cousine-Italic.ttf);
+    font-style: italic;
 }
 
 nav {
@@ -20,9 +35,12 @@ body {
     position: relative;
 }
 
+* {
+    font-family: "cousine";
+}
+
 table {
     border-collapse: collapse;
-    background-image: url();
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -136,7 +154,12 @@ nav {
     color: var(--gold);
     z-index: 100;
     position: absolute;
-    font-weight: bold;
+    font-weight: bolder;
+    text-shadow:
+        -1px -1px 0 rgb(0, 31, 156),
+        1px -1px 0 rgb(0, 31, 156),
+        -1px 1px 0 rgb(0, 31, 156),
+        1px 1px 0 rgb(0, 31, 156);
 }
 
 nav #value {
@@ -179,7 +202,6 @@ nav > button {
 
 #initiativeTracker {
     position: fixed;
-    width: 10vw;
     background-color: var(--navy);
     top: 0px;
     right: 0px;
@@ -190,13 +212,13 @@ nav > button {
     text-align: right;
 }
 #initiativeTracker > img {
-    position: absolute;
+    position: fixed;
     right: 0px;
+    bottom: 0px;
     height: 15vw;
-    transform-origin: top right;
+    transform-origin: bottom right;
+    transition: transform 1s ease-in-out;
 }
 #initiativeTracker > img:hover {
-    position: fixed;
-    top: 0px;
-    height: 100vh;
+    transform: scale(3);
 }
