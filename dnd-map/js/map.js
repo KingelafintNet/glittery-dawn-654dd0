@@ -134,7 +134,8 @@ for (let i = 0; i < height; i++) {
     let row = document.createElement("tr");
     for (let j = 0; j < width; j++) {
         let cell = document.createElement("td");
-        cell.style.backgroundColor = procBackground[i * height + j];
+        cell.style.backgroundColor = procBackground[i * width + j];
+        console.log(`Index:${i * height + j}`);
         row.appendChild(cell);
     }
     table.appendChild(row);
@@ -171,6 +172,7 @@ function placeTokens() {
         });
 
         const cell = table.rows[element.y].cells[element.x];
+        console.log(i);
         const cellRect = cell.getBoundingClientRect();
         const bodyRect = document.body.getBoundingClientRect();
         const tokenWidth = size[element.size] + 2;
