@@ -64,13 +64,12 @@ td {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: -3px;
+    right: -3px;
     border-radius: 100%;
     padding: 0px;
     border: black solid 3px;
-    z-index: 100000;
+    z-index: 10000;
 }
 
 .token > div:first-child {
@@ -119,7 +118,7 @@ td {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999999;
+    z-index: 100002;
 }
 .ArrowUp {
     transform: rotate(90deg);
@@ -147,6 +146,9 @@ nav {
     display: flex;
     flex-direction: row;
     align-items: center;
+    position: sticky;
+    top: 0px;
+    z-index: 100000;
 }
 
 #hpText {
@@ -205,6 +207,7 @@ nav > button {
     background-color: var(--navy);
     top: 0px;
     right: 0px;
+    z-index: 100009;
 }
 #initiativeTracker > h4 {
     margin: 5px;

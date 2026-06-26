@@ -70,6 +70,7 @@ supabase
     })
     .subscribe();
 
+// get the pictures from storage
 for (let i = 0; i < positions.length; i++) {
     const element = positions[i];
     if (true) {
@@ -135,7 +136,6 @@ for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
         let cell = document.createElement("td");
         cell.style.backgroundColor = procBackground[i * width + j];
-        console.log(`Index:${i * height + j}`);
         row.appendChild(cell);
     }
     table.appendChild(row);
@@ -172,13 +172,12 @@ function placeTokens() {
         });
 
         const cell = table.rows[element.y].cells[element.x];
-        console.log(i);
         const cellRect = cell.getBoundingClientRect();
         const bodyRect = document.body.getBoundingClientRect();
         const tokenWidth = size[element.size] + 2;
         const tokenHeight = size[element.size] + 2;
-        const tokenTop = cellRect.top - bodyRect.top + (cellRect.height - tokenHeight) / 2;
-        const tokenLeft = cellRect.left - bodyRect.left + (cellRect.width - tokenWidth) / 2;
+        const tokenTop = cellRect.top - bodyRect.top + (cellRect.height - tokenHeight);
+        const tokenLeft = cellRect.left - bodyRect.left + (cellRect.width - tokenWidth);
 
         if (positions[i].controlling && (positions[i].token_name == localStorage.getItem("profile") || localStorage.getItem("profile") == GMcode)) {
             directions.forEach((direction) => {
@@ -197,7 +196,7 @@ function placeTokens() {
                 let arrowLeft = -6 + tokenLeft + (tokenWidth - arrowWidth) / 2;
 
                 if (direction === "ArrowUp") {
-                    arrowTop = tokenTop - 40;
+                    arrowTop = tokenTop - arrowHeight;
                 } else if (direction === "ArrowDown") {
                     arrowTop = tokenTop + tokenHeight - 12;
                 } else if (direction === "ArrowLeft") {
@@ -228,7 +227,6 @@ function placeTokens() {
     displayHeader();
 
     if (showStats) {
-        console.log(positions[controlling].stats);
         initiativeTracker.lastChild.style.display = "block";
         initiativeTracker.lastChild.src = positions[controlling].stats;
     }
@@ -285,7 +283,7 @@ if (GMcode == localStorage.getItem("profile")) {
     statsButton.innerText = "Show Selected Stats";
     statsButton.onclick = () => {
         showStats = !showStats;
-        placeTokens();
+        makeOrderList();
     };
     document.querySelector("nav").append(statsButton);
 }
@@ -293,6 +291,7 @@ if (GMcode == localStorage.getItem("profile")) {
 document.getElementById("nextInitiative").onclick = () => {
     nextInitiative();
 };
+
 function nextInitiative() {
     if (true) {
         let state = positions[0];
