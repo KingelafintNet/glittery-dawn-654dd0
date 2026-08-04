@@ -19,8 +19,8 @@
                 <span id="hpText"></span>
             </div>
             <input type="number" name="value" id="value" />
-            <button type="button" id="Damage" style="color: rgb(255, 0, 0); font-weight: bold">Damage</button>
-            <button type="button" id="Heal" style="color: rgb(135, 255, 79); font-weight: bold">Heal</button>
+            <button class="red-button" type="button" id="Damage">Damage</button>
+            <button class="green-button" type="button" id="Heal">Heal</button>
             <span id="distance" style="color: var(--gold)">Distance moved: </span>
             <button type="button" id="Update" style="color: var(--gold)">Update</button>
             <button type="button" id="nextInitiative">Next</button>
@@ -29,5 +29,8 @@
             <!-- The map will be generated here by JavaScript -->
         </table>
         <div id="initiativeTracker"></div>
+        <div>
+            <img id="statsImage" src="" alt="stats" style="display: none" />
+        </div>
     </body>
 </html>

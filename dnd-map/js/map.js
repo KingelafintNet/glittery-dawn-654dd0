@@ -1,4 +1,5 @@
 // Supabase configuration
+import { rgbToHex } from "./utils.js";
 
 let positions = [];
 let shadows = [];
@@ -16,6 +17,7 @@ let GMcode;
 let width;
 let height;
 let backgroundData;
+let showEnemyStats;
 
 let controlling = 0;
 let showStats = false;
@@ -41,6 +43,7 @@ if (true) {
         height = data.height;
         width = data.width;
         backgroundData = data.background;
+        showEnemyStats = data.private_hp_ac;
     }
 }
 
@@ -112,7 +115,57 @@ if (urlParams.get("profile")) {
 } else {
     if (localStorage.getItem("profile")) {
     } else {
-        localStorage.setItem("profile", prompt("Who are you controlling?"));
+        // They dont have anything previously established, so let them choose
+        // First make the pop-up for alliance color
+        const pop_up = document.createElement("div");
+        pop_up.classList.add("pop-up");
+
+        const colors = [];
+        positions.forEach((a) => {
+            if (colors.includes(a.teamColor)) {
+            } else {
+                colors.push(a.teamColor);
+            }
+        });
+        pop_up.innerHTML += `<span style="width:100%; text-align:center;">Choose your team:</span>`;
+        for (let i = 0; i < colors.length; i++) {
+            const element = colors[i];
+            const color = document.createElement("div");
+            color.classList.add("pop-up-team-color");
+            color.style.backgroundColor = element;
+            color.onclick = (a) => {
+                let teamColor = rgbToHex(color.style.backgroundColor);
+                const pop_up = document.getElementsByClassName("pop-up");
+                pop_up[0].innerHTML = `<span style="width:100%; text-align:center;">Choose your token:</span>`;
+                let team = positions.filter((a) => {
+                    return a.teamColor === teamColor;
+                });
+                team.forEach((element) => {
+                    let token = document.createElement("div");
+                    token.innerHTML = `<div><img src="${element.picture}"></div><span>${element.token_name}</span>`;
+                    token.classList.add("pop-up-token");
+                    token.style.borderColor = element.teamColor;
+                    // token.onclick = (a) => {
+                    //     localStorage.setItem("profile", team.token_name);
+                    //     console.log(a);
+                    //     document.getElementsByClassName("pop-up")[0].remove();
+                    // };
+                    token.addEventListener("click", (e) => {
+                        let token = e.target;
+                        while (!token.classList.contains("pop-up-token")) {
+                            token = token.parentElement;
+                        }
+                        console.log(token.lastChild.innerHTML);
+                        localStorage.setItem("profile", token.lastChild.innerHTML);
+                        document.getElementsByClassName("pop-up")[0].remove();
+                    });
+                    document.getElementsByClassName("pop-up")[0].appendChild(token);
+                });
+            };
+
+            pop_up.appendChild(color);
+        }
+        document.body.appendChild(pop_up);
     }
 }
 // Make table
@@ -227,8 +280,10 @@ function placeTokens() {
     displayHeader();
 
     if (showStats) {
-        initiativeTracker.lastChild.style.display = "block";
-        initiativeTracker.lastChild.src = positions[controlling].stats;
+        document.getElementById("statsImage").style.display = "block";
+        document.getElementById("statsImage").src = positions[controlling].stats;
+    } else {
+        document.getElementById("statsImage").style.display = "none";
     }
 }
 function changeControlling(position) {
@@ -237,7 +292,6 @@ function changeControlling(position) {
     positions[controlling].controlling = true;
 
     displayHeader();
-    document.getElementById("creatureName").innerText = `Name: ${positions[position].token_name} | AC: ${positions[position].ac}`;
     placeTokens();
 }
 
@@ -252,6 +306,7 @@ function moveToken(direction, index) {
             positions[index].shadeIndex = shadows.length;
             shadows.push({ ...state });
         }
+        let oldState = { ...state };
         if (direction === "ArrowLeft") {
             state.x--;
         } else if (direction === "ArrowRight") {
@@ -261,6 +316,12 @@ function moveToken(direction, index) {
         } else if (direction === "ArrowDown") {
             state.y++;
         }
+        try {
+            if (!(table.rows[state.y].cells[state.x].innerHTML === "") && table.rows[state.y].cells[state.x].firstElementChild.classList.contains("token")) {
+                state.x = oldState.x;
+                state.y = oldState.y;
+            }
+        } catch (error) {}
         placeTokens();
     }
 }
@@ -280,7 +341,7 @@ for (let i = 0; i < buttons.length; i++) {
 if (GMcode == localStorage.getItem("profile")) {
     const statsButton = document.createElement("button");
     statsButton.type = "button";
-    statsButton.innerText = "Show Selected Stats";
+    statsButton.innerText = "Show Stats";
     statsButton.onclick = () => {
         showStats = !showStats;
         makeOrderList();
@@ -337,29 +398,47 @@ function manageHealth(button) {
 }
 
 function displayHeader() {
+    let profile = localStorage.getItem("profile");
+    let displayToken = positions[controlling];
     let color1 = document.getElementById("hpColor1");
     let color2 = document.getElementById("hpColor2");
-    let left;
-    let color = "hsl(" + String((120 * positions[controlling].hp) / positions[controlling].hpMax) + ",100%,50%)";
-    document.getElementById("hpText").innerHTML = `<span>${positions[controlling].hp}/${positions[controlling].hpMax}</span>`;
-    left = (positions[controlling].hp / positions[controlling].hpMax) * 180 - 90;
-    if (positions[controlling].hp / positions[controlling].hpMax > 0.5) {
-        left = left - 90;
-        color2.style.backgroundColor = color;
-    } else {
-        color2.style.backgroundColor = "var(--navy)";
+    let isTeamCoordinated;
+    if (!(profile === GMcode)) {
+        isTeamCoordinated =
+            displayToken.teamColor ===
+            positions.find((b) => {
+                return b.token_name === profile;
+            }).teamColor;
     }
-    color1.style.backgroundColor = color;
-    color2.style.left = String(left) + "px";
+    if (profile === GMcode || isTeamCoordinated) {
+        let left;
+        let color = "hsl(" + String((120 * displayToken.hp) / displayToken.hpMax) + ",100%,50%)";
+        document.getElementById("hpText").innerHTML = `<span>${displayToken.hp}/${displayToken.hpMax}</span>`;
+        left = (displayToken.hp / displayToken.hpMax) * 180 - 90;
+        if (displayToken.hp / displayToken.hpMax > 0.5) {
+            left = left - 90;
+            color2.style.backgroundColor = color;
+        } else {
+            color2.style.backgroundColor = "var(--navy)";
+        }
+        color1.style.backgroundColor = color;
+        color2.style.left = String(left) + "px";
 
-    let distanceText = document.getElementById("distance");
-    try {
-        let currentReal = positions[controlling];
-        let xDiff = shadows[currentReal.shadeIndex].x - currentReal.x;
-        let yDiff = shadows[currentReal.shadeIndex].y - currentReal.y;
-        let final = Math.floor(Math.sqrt(xDiff ** 2 + yDiff ** 2) * 5);
-        distanceText.innerText = `Distance moved: ${final} feet`;
-    } catch (error) {}
+        let distanceText = document.getElementById("distance");
+        try {
+            let currentReal = displayToken;
+            let xDiff = shadows[currentReal.shadeIndex].x - currentReal.x;
+            let yDiff = shadows[currentReal.shadeIndex].y - currentReal.y;
+            let final = Math.floor(Math.sqrt(xDiff ** 2 + yDiff ** 2) * 5);
+            distanceText.innerText = `Distance moved: ${final} feet`;
+        } catch (error) {}
+        document.getElementById("creatureName").innerText = `Name: ${displayToken.token_name} | AC: ${displayToken.ac}`;
+    } else {
+        document.getElementById("hpText").innerHTML = "";
+        color1.style.backgroundColor = "var(--navy)";
+        color2.style.backgroundColor = "var(--navy)";
+        document.getElementById("creatureName").innerText = `Name: ${displayToken.token_name}`;
+    }
 }
 
 // Initial sort for the the order tracker
@@ -391,7 +470,11 @@ function makeOrderList() {
             initiativeTracker.appendChild(element);
         }
     }
-    initiativeTracker.innerHTML += `<img src="" alt="stats" style="display:none">`;
+    initiativeTracker.innerHTML += `
+    <input type="checkbox" id="arrowToggle" class="arrow-checkbox">
+    <label for="arrowToggle" class="arrow-btn">
+    &#10140;
+    </label>`;
     placeTokens();
 }
 

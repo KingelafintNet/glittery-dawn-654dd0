@@ -21,15 +21,6 @@
     font-style: italic;
 }
 
-nav {
-    width: 100vw;
-    height: 40px;
-    background-color: var(--navy);
-    border-bottom: solid 1px var(--gold);
-    display: flex;
-    gap: 10px;
-}
-
 body {
     margin: 0px;
     position: relative;
@@ -79,11 +70,13 @@ td {
     margin: 0px;
     padding: 0px;
 }
+
 .token img {
     width: 100%;
     margin: 0px;
     position: absolute;
 }
+
 .shade {
     display: flex;
     justify-content: center;
@@ -149,10 +142,16 @@ nav {
     position: sticky;
     top: 0px;
     z-index: 100000;
+    width: 100vw;
+    height: 50px;
+    background-color: var(--navy);
+    border-bottom: solid 1px var(--gold);
+    gap: 10px;
 }
 
 #hpText {
     font-size: 100%;
+    margin-top: 7px;
     color: var(--gold);
     z-index: 100;
     position: absolute;
@@ -168,7 +167,15 @@ nav #value {
     background-color: rgb(0, 31, 156);
     border: solid 1px var(--gold);
     color: var(--gold);
-    width: 40px;
+    width: 20px;
+    appearance: none;
+    -moz-appearance: textfield;
+}
+
+nav #value::-webkit-outer-spin-button,
+nav #value::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 #hpBar {
@@ -189,15 +196,28 @@ nav #value {
 #hpBar > div {
     display: flex;
     position: relative;
+    height: 30px;
 }
 
 nav > button {
     background-color: rgb(0, 31, 156);
     border: none;
-    margin: 1px;
+    padding: 10px;
+    border-radius: 10px;
     color: var(--gold);
     border: solid 1px var(--gold);
 }
+
+nav > button:hover,
+.arrow-btn:hover {
+    filter: saturate(0.8);
+}
+
+nav > button:active,
+.arrow-btn:active {
+    filter: saturate(1.2);
+}
+
 #creatureName {
     margin: 10px;
 }
@@ -208,20 +228,127 @@ nav > button {
     top: 0px;
     right: 0px;
     z-index: 100009;
+    transition: transform 1s ease;
+    border: solid 2px var(--gold);
 }
 #initiativeTracker > h4 {
     margin: 5px;
     color: var(--gold);
     text-align: right;
 }
-#initiativeTracker > img {
+div:has(#statsImage) {
     position: fixed;
-    right: 0px;
+    left: 50vw;
     bottom: 0px;
+    transform: translateX(-50%);
+    z-index: 100010;
+}
+#statsImage {
     height: 15vw;
-    transform-origin: bottom right;
+    transform-origin: bottom;
     transition: transform 1s ease-in-out;
 }
-#initiativeTracker > img:hover {
+#statsImage:hover {
     transform: scale(3);
+}
+
+.arrow-checkbox {
+    display: none;
+}
+
+.arrow-btn {
+    display: inline-block;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 1s ease;
+    user-select: none;
+    color: var(--gold);
+    background-color: var(--navy);
+    border-radius: 10px 0px 0px 10px;
+    border: solid 2px var(--gold);
+    position: absolute;
+    z-index: 100008;
+    top: 50%;
+    border-right: none;
+    transform: translateY(-50%) translateX(-100%);
+}
+
+.arrow-checkbox:checked + .arrow-btn {
+    transform: rotateY(180deg) translateY(-50%) translateX(100%);
+    border-radius: 0px 10px 10px 0px;
+    border-left: none;
+    border-right: solid 2px var(--gold);
+}
+
+#initiativeTracker:has(.arrow-checkbox:checked) {
+    transform: translateX(100%);
+}
+
+#Heal {
+    background-color: #217c3f;
+    font-weight: bold;
+    border: 0;
+}
+
+#Damage {
+    background-color: #bd2d2d;
+    font-weight: bold;
+    border: 0;
+}
+
+/* Stuff for the pop-up */
+
+.pop-up {
+    position: fixed;
+    z-index: 100011;
+    left: 10vw;
+    right: 10vw;
+    top: 10vh;
+    bottom: 10vh;
+    background-color: var(--navy);
+    border: solid 2px var(--gold);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--gold);
+}
+
+.pop-up-team-color {
+    height: 100px;
+    width: 100px;
+}
+
+.pop-up-token {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    padding: 0px;
+    border: black solid 3px;
+    z-index: 10012;
+    width: 100px;
+    height: 100px;
+}
+
+.pop-up-token > div:first-child {
+    overflow: hidden;
+    border-radius: 100%;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    width: 100px;
+    height: 100px;
+}
+
+.pop-up-token img {
+    width: 100%;
+}
+
+.pop-up-token > span {
+    position: relative;
+    top: 70px;
+    font-size: large;
+    transform: translateY(50%);
 }
